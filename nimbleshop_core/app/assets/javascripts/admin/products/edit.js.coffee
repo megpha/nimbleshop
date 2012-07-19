@@ -1,10 +1,11 @@
+window.Nimbleshop = {} if typeof(Nimbleshop) == 'undefined'
+
 $ ->
   # work around the nested form ugliness
   $("form input:file").parents('.fields').hide()
 
 
 
-window.Nimbleshop = {} if typeof(Nimbleshop) == 'undefined'
 
 Nimbleshop.managePicture = class ManagePicture
   constructor: ->
@@ -18,7 +19,7 @@ Nimbleshop.managePicture = class ManagePicture
       false
 
    makePictureSortable: ->
-    $(".product_pictures").sortable(update: (_, __) ->
+    $(".product_pictures").sortable(update: ->
       order = {}
       $(".product_pictures li").each (index, elem) ->
         order[index] = $(elem).attr("data-id")
