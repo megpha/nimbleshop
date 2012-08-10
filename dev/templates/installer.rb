@@ -9,6 +9,7 @@ gem 'nimbleshop_authorizedotnet', path: "#{path.join('payment_methods', 'nimbles
 gem 'nimbleshop_paypalwp',        path: "#{path.join('payment_methods', 'nimbleshop_paypalwp')}"
 gem 'nimbleshop_splitable',       path: "#{path.join('payment_methods', 'nimbleshop_splitable')}"
 gem 'nimbleshop_cod',             path: "#{path.join('payment_methods', 'nimbleshop_cod')}"
+gem 'nimbleshop_stripe',          path: "#{path.join('payment_methods', 'nimbleshop_stripe')}"
 
 GEMFILE
 

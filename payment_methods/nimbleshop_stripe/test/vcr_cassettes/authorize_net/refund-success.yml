@@ -1,0 +1,38 @@
+--- 
+http_interactions: 
+- request: 
+    method: post
+    uri: https://test.authorize.net/gateway/transact.dll
+    body: 
+      encoding: US-ASCII
+      string: x_version=3.1&x_login=26Daqx7Jtw7R&x_tran_key=66JWf57KKc82W9y6&x_relay_response=FALSE&x_type=CREDIT&x_delim_data=TRUE&x_delim_char=%2C&x_encap_char=%24&x_trans_id=2171213294&x_card_num=XXXX-XXXX-XXXX-0027&x_invoice_num=&x_description=&x_amount=100.48&x_test_request=FALSE
+    headers: 
+      Content-Type: 
+      - application/x-www-form-urlencoded
+      Accept: 
+      - "*/*"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Connection: 
+      - close
+      Date: 
+      - Wed, 02 May 2012 19:50:48 GMT
+      Server: 
+      - Microsoft-IIS/6.0
+      X-Powered-By: 
+      - ASP.NET
+      Content-Type: 
+      - text/html
+      Content-Length: 
+      - "310"
+    body: 
+      encoding: US-ASCII
+      string: $1$,$1$,$1$,$This transaction has been approved.$,$$,$P$,$2171555499$,$$,$$,$100.48$,$CC$,$credit$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$DFF17287B2348D649D6F98C83DDA88CC$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$XXXX0027$,$Visa$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$
+    http_version: 
+  recorded_at: Wed, 02 May 2012 19:50:48 GMT
+recorded_with: VCR 2.0.0

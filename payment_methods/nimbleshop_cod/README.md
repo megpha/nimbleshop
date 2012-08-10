@@ -8,4 +8,4 @@ Documentation is available at [http://nimbleshop.org/](http://nimbleShop.org) .
 
 # License
 
-nimbleshop_cod uses [MIT license](http://www.opensource.org/licenses/mit-license.php) .
+This gem uses [MIT license](http://www.opensource.org/licenses/mit-license.php) .

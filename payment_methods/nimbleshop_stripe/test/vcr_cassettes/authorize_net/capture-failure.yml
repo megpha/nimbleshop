@@ -1,0 +1,38 @@
+--- 
+http_interactions: 
+- request: 
+    method: post
+    uri: https://test.authorize.net/gateway/transact.dll
+    body: 
+      encoding: US-ASCII
+      string: x_version=3.1&x_login=26Daqx7Jtw7R&x_tran_key=66JWf57KKc82W9y6&x_relay_response=FALSE&x_type=PRIOR_AUTH_CAPTURE&x_delim_data=TRUE&x_delim_char=%2C&x_encap_char=%24&x_trans_id=%7B%7D&x_amount=&x_test_request=FALSE
+    headers: 
+      Content-Type: 
+      - application/x-www-form-urlencoded
+      Accept: 
+      - "*/*"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Connection: 
+      - close
+      Date: 
+      - Sun, 22 Apr 2012 15:19:50 GMT
+      Server: 
+      - Microsoft-IIS/6.0
+      X-Powered-By: 
+      - ASP.NET
+      Content-Type: 
+      - text/html
+      Content-Length: 
+      - "311"
+    body: 
+      encoding: US-ASCII
+      string: $3$,$2$,$33$,$A valid referenced transaction ID is required.$,$$,$P$,$0$,$$,$$,$0.00$,$CC$,$prior_auth_capture$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$E4D08D153C02147DACEF435A63672D69$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$
+    http_version: 
+  recorded_at: Sun, 22 Apr 2012 15:19:50 GMT
+recorded_with: VCR 2.0.0

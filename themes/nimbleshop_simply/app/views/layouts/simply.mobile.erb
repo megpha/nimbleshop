@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> <%= display_page_title %> </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <%= stylesheet_link_tag 'nimbleshop_simply/mobile_simply' %>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+
+    <%= csrf_meta_tag %>
+  </head>
+
+  <body>
+    <div data-role="page">
+      <div data-role="header">
+        <h1>nimbleShop</h1>
+      </div>
+
+      <%= yield %>
+
+
+      <div data-role="footer">
+        <h4>Page Footer</h4>
+      </div>
+    </div>
+
+  </body>
+</html>

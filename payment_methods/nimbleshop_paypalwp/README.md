@@ -8,5 +8,5 @@ Documentation is available at [http://nimbleshop.org/](http://nimbleshop.org) .
 
 # License
 
-nimbleshop_paypalwp uses [MIT license](http://www.opensource.org/licenses/mit-license.php) .
+This gem uses [MIT license](http://www.opensource.org/licenses/mit-license.php) .
 

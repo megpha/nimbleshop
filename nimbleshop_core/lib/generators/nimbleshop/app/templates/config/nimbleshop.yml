@@ -15,6 +15,9 @@ common:
     login_id: <%= ENV['AUTHORIZE_NET_LOGIN_ID'] || '26Daqx7Jtw7R' %>
     transaction_key: <%= ENV['AUTHORIZE_NET_TRANSACTION_KEY'] || '66JWf57KKc82W9y6' %>
 
+  stripe:
+    publishable_key: <%= ENV['STRIPE_PUBLISHABLE_KEY'] || 'pk_09SbnVVDVtzcvflsBiNFToX5TO3f6' %>
+
   s3:
     access_key_id: <%= ENV['S3_ACCESS_KEY_ID'] %>
     secret_access_key: <%= ENV['S3_SECRET_ACCESS_KEY'] %>

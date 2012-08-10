@@ -1,0 +1,20 @@
+# encoding: UTF-8
+require 'bundler/gem_tasks'
+require 'rake/testtask'
+require 'rdoc/task'
+
+desc 'Default: run tests'
+task :default => ['nimbleshop_stripe:test']
+task :test => ['nimbleshop_stripe:test']
+
+namespace :nimbleshop_stripe do
+
+  desc 'Run nimbleshop_stripe tests.'
+  Rake::TestTask.new(:test) do |t|
+    t.libs << 'lib'
+    t.libs << 'test'
+    t.pattern = 'test/**/*_test.rb'
+    t.verbose = true
+  end
+
+end

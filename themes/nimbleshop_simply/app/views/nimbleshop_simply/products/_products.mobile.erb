@@ -1,0 +1,15 @@
+<div class='span10'>
+  <% products.in_groups_of(3) do |group| %>
+     <ul class="unstyled row">
+        <% group.each do |product| %>
+            <% if product.blank? %>
+              &nbsp;
+            <% else %>
+              <li class="span3">
+                <%= render 'nimbleshop_simply/products/product', product: product %>
+              </li>
+            <% end %>
+        <% end %>
+     </ul>
+  <% end %>
+</div>

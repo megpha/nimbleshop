@@ -14,5 +14,5 @@ module Nimbleshop
     end
   end
 
-  RailsVersion = '= 3.2.6'
+  RailsVersion = '= 3.2.8'
 end

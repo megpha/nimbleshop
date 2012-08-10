@@ -1,8 +1,6 @@
 # nimbleshop_authorizedotnet extension
 
-This is Authorize.net extension for [nimbleShop](http://www.nimbleShop.org) .
-
-Please note that it does not support CIM feature of Authorize.net
+This is stripe extension for [nimbleShop](http://www.nimbleShop.org) .
 
 # Dependencies
 

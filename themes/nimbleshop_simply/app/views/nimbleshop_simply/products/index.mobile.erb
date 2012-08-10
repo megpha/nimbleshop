@@ -1,0 +1,15 @@
+<div data-role="content" data-theme="d">
+  <ul data-role="listview">
+      <% @products.each do |product| %>
+        <li>
+          <%= link_to product do %>
+            <%= product_main_picture(product, :small_plus) %>
+            <%= truncate(product.name, length: 50) %>
+            <p class='price'>
+              <%= number_to_currency(product.price) %>
+            </p>
+          <% end %>
+        </li>
+      <% end %>
+  </ul>
+</div>

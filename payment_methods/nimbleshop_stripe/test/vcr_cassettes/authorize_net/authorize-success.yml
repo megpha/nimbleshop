@@ -1,0 +1,38 @@
+--- 
+http_interactions: 
+- request: 
+    method: post
+    uri: https://test.authorize.net/gateway/transact.dll
+    body: 
+      encoding: US-ASCII
+      string: x_version=3.1&x_login=26Daqx7Jtw7R&x_tran_key=66JWf57KKc82W9y6&x_relay_response=FALSE&x_type=AUTH_ONLY&x_delim_data=TRUE&x_delim_char=%2C&x_encap_char=%24&x_invoice_num=&x_description=&x_card_num=4007000000027&x_card_code=123&x_exp_date=0413&x_first_name=Clarabelle&x_last_name=Stiedemann&x_amount=100.48&x_test_request=FALSE
+    headers: 
+      Content-Type: 
+      - application/x-www-form-urlencoded
+      Accept: 
+      - "*/*"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Connection: 
+      - close
+      Date: 
+      - Sun, 22 Apr 2012 14:59:29 GMT
+      Server: 
+      - Microsoft-IIS/6.0
+      X-Powered-By: 
+      - ASP.NET
+      Content-Type: 
+      - text/html
+      Content-Length: 
+      - "341"
+    body: 
+      encoding: US-ASCII
+      string: $1$,$1$,$1$,$This transaction has been approved.$,$FI4KFO$,$Y$,$2171213293$,$$,$$,$100.48$,$CC$,$auth_only$,$$,$Clarabelle$,$Stiedemann$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$C5FD3839F84A696E8F8727D8B387A800$,$P$,$2$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$XXXX0027$,$Visa$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$
+    http_version: 
+  recorded_at: Sun, 22 Apr 2012 14:59:30 GMT
+recorded_with: VCR 2.0.0
