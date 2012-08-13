@@ -11,7 +11,7 @@ module NimbleshopAuthorizedotnet
       image_tag 'engines/nimbleshop_authorizedotnet/authorizedotnet_small.png', alt: 'authorizedotnet icon'
     end
 
-    def nimbleshop_authorizedotnet_big_image
+    def nimbleshop_authorizedotnet_picture_on_admin_payment_methods
       image_tag 'engines/nimbleshop_authorizedotnet/authorizedotnet_big.png', alt: 'authorizedotnet logo'
     end
 

@@ -11,7 +11,7 @@ module NimbleshopCod
       image_tag 'engines/nimbleshop_cod/cod_small.png', {alt: 'cod icon'}.merge(options)
     end
 
-    def nimbleshop_cod_big_image
+    def nimbleshop_cod_picture_on_admin_payment_methods
       image_tag 'engines/nimbleshop_cod/cod_big.png', alt: 'cod logo'
     end
 

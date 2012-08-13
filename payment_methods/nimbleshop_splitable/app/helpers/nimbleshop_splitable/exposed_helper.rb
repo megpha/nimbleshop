@@ -5,11 +5,11 @@ module NimbleshopSplitable
       image_tag "engines/nimbleshop_splitable/splitable_small.png", {alt: 'splitable icon'}.merge(options)
     end
 
-    def nimbleshop_splitable_big_image(options = {})
-      image_tag "engines/nimbleshop_splitable/splitable_big.png", { alt: 'splitable logo' }.merge(options)
+    def nimbleshop_splitable_picture_on_admin_payment_methods
+      image_tag "engines/nimbleshop_splitable/splitable_big.png", { alt: 'splitable logo' }
     end
 
-    def nimbleshop_splitable_image()
+    def nimbleshop_splitable_image
       image_tag "engines/nimbleshop_splitable/splitable.png", alt: 'splitable logo'
     end
 

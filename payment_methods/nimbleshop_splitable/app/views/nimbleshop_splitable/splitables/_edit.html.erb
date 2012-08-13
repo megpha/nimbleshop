@@ -13,11 +13,10 @@
        <% end %>
      </div>
 
-    <%= nimbleshop_splitable_big_image %>
+    <%= nimbleshop_splitable_picture_on_admin_payment_methods %>
 
     <div class='clear'></div>
   </div>
-
 
   <%= render partial: '/nimbleshop_splitable/splitables/form' %>
 
@@ -27,9 +26,9 @@
   $(function(){
 
     $('#nimbleshop-splitable-payment-method-edit').toggle(function(){
-      $('#nimbleshop-splitable-form-well').show(); 
+      $('#nimbleshop-splitable-form-well').show();
     }, function(){
-      $('#nimbleshop-splitable-form-well').hide(); 
+      $('#nimbleshop-splitable-form-well').hide();
     });
 
   })

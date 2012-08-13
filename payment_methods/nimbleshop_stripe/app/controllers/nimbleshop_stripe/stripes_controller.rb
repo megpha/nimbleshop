@@ -9,7 +9,7 @@ module NimbleshopStripe
 
     def update
       respond_to do |format|
-        if @payment_method.update_attributes(post_params[:authorizedotnet])
+        if @payment_method.update_attributes(post_params[:stripe])
           format.js  {
             flash[:notice] = 'Stripe record was successfully updated'
             render js: "window.location = '/admin/payment_methods'"
@@ -38,7 +38,7 @@ module NimbleshopStripe
     private
 
     def post_params
-      params.permit(stripe: [:mode, :ssl, :login_id, :transaction_key, :business_name])
+      params.permit(stripe: [:mode, :ssl, :publishable_key, :business_name])
     end
 
     def load_payment_method

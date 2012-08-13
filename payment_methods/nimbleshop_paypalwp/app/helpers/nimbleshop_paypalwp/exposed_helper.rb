@@ -8,7 +8,7 @@ module NimbleshopPaypalwp
       image_tag "engines/nimbleshop_paypalwp/paypal_small.png", alt: 'paypal icon'
     end
 
-    def nimbleshop_paypalwp_big_image
+    def nimbleshop_paypalwp_picture_on_admin_payment_methods
       image_tag "engines/nimbleshop_paypalwp/paypal_big.png", alt: 'paypal logo'
     end
 
