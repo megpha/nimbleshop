@@ -38,7 +38,7 @@ module NimbleshopAuthorizedotnet
 
     def nimbleshop_authorizedotnet_payment_form(order)
       return unless NimbleshopAuthorizedotnet::Authorizedotnet.first
-      render partial: '/nimbleshop_authorizedotnet/payments/new', locals: {order: order}
+      render partial: '/nimbleshop_authorizedotnet/payments/new', locals: { order: order }
     end
 
     def nimbleshop_authorizedotnet_crud_form
