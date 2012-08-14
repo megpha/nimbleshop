@@ -36,7 +36,7 @@ module NimbleshopAuthorizedotnet
         return false
       end
 
-      response = gateway.authorize(order.total_amount_in_cents, creditcard, Util.am_options(order))
+      response = gateway.authorize(order.total_amount_in_cents, creditcard, ::PaymentUtil.am_options(order))
       record_transaction(response, 'authorized', card_number: creditcard.display_number, cardtype: creditcard.cardtype)
 
       if response.success?

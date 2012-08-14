@@ -27,17 +27,17 @@
     <fieldset>
       <div class='control-group'>
         <div class='controls'>
-          <%= f.text_field :number, class: 'input-xlarge focus', placeholder: 'Credit card number', autocomplete: 'off' %>
+          <input autocomplete="off" class="input-xlarge focus" id="creditcard_number" placeholder="Credit card number" size="30" type="text">
           <% unless (NimbleshopStripe::Stripe.first.mode == 'production') %>
             &nbsp;
-            <%= link_to 'Valid number', '#authorizenetsandboxhelp', 'data-toggle' => "modal" %>
+            <%= link_to 'Valid number', '#stripe-sandboxhelp', 'data-toggle' => "modal" %>
           <% end %>
         </div>
       </div>
 
       <div class='control-group'>
         <div class='controls'>
-          <%= f.text_field :cvv, placeholder: 'CVV', autocomplete: 'off' %>
+          <input autocomplete="off" id="creditcard_cvv" placeholder="CVV" size="30" type="text">
           &nbsp;
           <%= link_to 'What is this?', '#cvvhelp', 'data-toggle' => "modal" %>
         </div>
@@ -58,7 +58,7 @@
   </div>
 
   <div class="form-actions">
-    <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    <%= f.submit 'Submit', class: 'btn btn-primary', 'data-behavior' => 'stripe-submit-button' %>
   </div>
 
   <%= render '/nimbleshop_stripe/payments/stripe_instructions' %>
@@ -74,17 +74,36 @@
   }
 </style>
 
+<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+<script type="text/javascript"> Stripe.setPublishableKey('<%=NimbleshopStripe::Stripe.first.publishable_key%>'); </script>
 <script>
 $(document).ready(function(){
+  $('#stripe-payment-form').submit(function(event){
+    $('[data-behavior~=stripe-submit-button]').attr('value', 'processing ...').attr('disabled', 'disabled');
 
-  $('#authorizedotnet-payment-form')
-    .bind("ajax:beforeSend", function(evt, xhr, settings){
-      var $btn = $('#authorizedotnet-payment-form').find('.btn-primary');
-      $btn.attr('value', 'processing ...').attr('disabled', 'disabled');
-    })
-    .bind("ajax:complete", function(evt, data, status, xhr){
-      var $btn = $('#authorizedotnet-payment-form').find('.btn-primary');
-      $btn.attr('value', 'Submit').removeAttr('disabled');
-    })
+    function stripeResponseHandler(status, response) {
+      if (response.error) {
+        $('[data-behavior~=stripe-submit-button]').attr('value', 'Submit').removeAttr('disabled');
+        alert(response.error.message);
+      } else {
+        var $form = $("#stripe-payment-form");
+        // token contains id, last4, and card type
+        var token = response['id'];
+        // insert the token into the form so it gets submitted to the server
+        $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+        $form.get(0).submit();
+      }
+    }
+
+    Stripe.createToken({
+      number: $('#creditcard_number').val(),
+      cvc: $('#creditcard_cvv').val(),
+      exp_month: $('#creditcard_expires_on_2i').val(),
+      exp_year: $('#creditcard_expires_on_1i').val()
+    }, stripeResponseHandler);
+
+    // prevent the form from submitting with the default action
+    return false;
+  });
 });
 </script>

@@ -8,6 +8,7 @@ module NimbleshopStripe
       @order = options.fetch(:order)
       @payment_method = options.fetch(:payment_method)
       @gateway = ::NimbleshopStripe::Gateway.instance(payment_method)
+      Stripe.api_key = options.fetch(:publishable_key)
     end
 
     private
@@ -36,7 +37,8 @@ module NimbleshopStripe
         return false
       end
 
-      response = gateway.authorize(order.total_amount_in_cents, creditcard, Util.am_options(order))
+      response = gateway.authorize(order.total_amount_in_cents, creditcard, ::PaymentUtil.activemerchant_options(order))
+
       record_transaction(response, 'authorized', card_number: creditcard.display_number, cardtype: creditcard.cardtype)
 
       if response.success?
