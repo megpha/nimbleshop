@@ -1,4 +1,4 @@
-window.Nimbleshop = {} if typeof(Nimbleshop) == 'undefined'
+window.Nimbleshop = window.Nimbleshop || {}
 
 Nimbleshop.managePaymentMethods = class ManagePaymentMethods
   constructor: ->
