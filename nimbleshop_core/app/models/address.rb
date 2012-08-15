@@ -46,18 +46,12 @@ class Address < ActiveRecord::Base
     country = Carmen::Country.coded(country_code)
     return unless country
 
-    if country.subregions?
-      if state_code.blank?
-        errors.add(:state_code, "is required")
-      elsif state = country.subregions.coded(state_code)
-        self.state_name = state.name
-      else
-        errors.add(:state_code, "#{state_code} is not a valid state")
-      end
+    if state_code.blank?
+      errors.add(:state_code, "is required")
+    elsif state = country.subregions.coded(state_code)
+      self.state_name = state.name
     else
-      if state_name.blank?
-        errors.add(:state_name, "#{state_name} is required")
-      end
+      errors.add(:state_code, "#{state_code} is not a valid state")
     end
   end
 end

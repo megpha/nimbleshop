@@ -2,7 +2,7 @@ class RegionalShippingZone < ShippingZone
 
   validates :state_code, presence: true, uniqueness: { scope: :country_shipping_zone_id }
 
-  validate :code_validity, if: lambda { |r| r.state_code && r.country }
+  validate :validate_state_code, if: lambda { |r| r.state_code && r.country }
 
   before_save :set_name
 
@@ -10,7 +10,7 @@ class RegionalShippingZone < ShippingZone
 
   private
 
-  def code_validity
+  def validate_state_code
     country = country_shipping_zone.country
     unless country.subregions.coded(state_code)
       errors.add(:state_code, "#{state_code} is an invalid regional code for country #{country.name}")
