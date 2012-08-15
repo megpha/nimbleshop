@@ -37,14 +37,14 @@ module Nimbleshop
       path.join('')
     end
 
-    # The output is something like
+    # returns an array like this
     # ["Timor-Leste", "TL"], ["Turkmenistan", "TM"], ["Tunisia", "TN"], ["Tonga", "TO"], .......
-    def self.countries_list_with_name_and_code
-      Carmen::Country.all.map { |t| [t.name, t.alpha_2_code] }
+    def self.name_and_code_of_countries_with_subregions
+      Carmen::Country.all.select { |c| c.subregions? }.map { |t| [t.name, t.alpha_2_code] }
     end
 
     def self.countries_without_shipping_zone
-      Nimbleshop::Util.countries_list_with_name_and_code.reject { |_, t| CountryShippingZone.all_country_codes.include?(t) }
+      Nimbleshop::Util.name_and_code_of_countries_with_subregions.reject { |_, t| CountryShippingZone.all_country_codes.include?(t) }
     end
 
     def self.disabled_shipping_zone_countries
@@ -56,7 +56,7 @@ module Nimbleshop
     end
 
     def self.countries_with_shipping_zone
-      Nimbleshop::Util.countries_list_with_name_and_code.select { |_, t| CountryShippingZone.all_country_codes.include?(t)}
+      Nimbleshop::Util.name_and_code_of_countries_with_subregions.select { |_, t| CountryShippingZone.all_country_codes.include?(t)}
     end
 
   end

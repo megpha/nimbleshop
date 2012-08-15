@@ -30,14 +30,16 @@ module NimbleshopHelper
     %|#{controller.controller_name} #{controller.controller_name}-#{controller.action_name}|
   end
 
+  # returns hash for all countries with subregions like this
+  #  {
+  #    'CA' => [["Alberta", "AB"], ["British Columbia", "BC"], ["Manitoba", "MB"],...],
+  #    'US' => [["Alaska", "AK"], ["Alabama", "AL"], ["Arkansas", "AR"], ["American Samoa", "AS"],...],
+  #    }
   def grouped_options_for_country_state_codes
-    Carmen::Country.all.reduce({}) do |h, country|
-      h[country.alpha_2_code] = country.subregions.map do |r|
-        [r.name, r.code]
-      end
+    Carmen::Country.all.select { |c| c.subregions?  }.reduce({}) do |h, country|
+      h[country.alpha_2_code] = country.subregions.map { |r| [r.name, r.code] }
       h
     end
   end
-
 
 end
