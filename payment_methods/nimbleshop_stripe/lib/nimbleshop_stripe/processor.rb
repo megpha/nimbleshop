@@ -5,8 +5,8 @@ module NimbleshopStripe
 
     def initialize(options)
       @errors = []
-      @order = options.fetch(:order)
-      @payment_method = options.fetch(:payment_method)
+      @order = options.fetch :order
+      @payment_method = options.fetch :payment_method
       @gateway = ::NimbleshopStripe::Gateway.instance(payment_method)
       ::Stripe.api_key = payment_method.secret_key
     end
@@ -18,8 +18,7 @@ module NimbleshopStripe
     end
 
     def do_authorize(options = {})
-      #Stripe does not support authorize operation
-      do_purchase(options)
+      raise "Stripe does not support authorize operation"
     end
 
     # Creates purchase for the order amount.
@@ -33,53 +32,42 @@ module NimbleshopStripe
     #
     def do_purchase(options = {})
       options.symbolize_keys!
-      options.assert_valid_keys(:token)
+      options.assert_valid_keys :token
 
-      token = options[:token]
+      token = options.fetch :token
 
       response = gateway.purchase(order.total_amount_in_cents, token)
-      token_response = ::Stripe::Token.retrieve(token)
-
-      record_transaction(response, 'purchased',
-                                    fingerprint: token_response.card.fingerprint,
-                                    livemode: token_response.livemode,
-                                    card_number: "XXXX-XXXX-XXXX-#{token_response.card.last4}",
-                                    cardtype: token_response.card.type.downcase,
-                                    transaction_gid: token_response.id)
 
       if response.success?
+        # record transaction only if the operation was a success. Because if the operation was a failure then
+        # getting Token.retrieve will throw exception
+        ::Nimbleshop::PaymentTransactionRecorder.new(payment_transaction_recorder_hash(response, token)).record
+
         order.update_attributes(payment_method: payment_method)
         order.purchase!
       else
         Rails.logger.info response.params['error']['message']
         @errors << 'Credit card was declined. Please try again!'
-        return false
       end
+
+      response.success?
     end
 
-    # Voids the previously authorized transaction.
-    #
-    # === Options
-    #
-    # * <tt>:transaction_gid</tt> -- transaction_gid is the transaction id returned by the gateway. This is a required field.
-    #
-    # This method returns false if void fails. Error messages are in <tt>errors</tt> array.
-    # If void succeeds then <tt>order.void</tt> is invoked.
-    #
+    def payment_transaction_recorder_hash(response, token)
+      token_response = ::Stripe::Token.retrieve(token)
+
+      {  response: response,
+         order: order,
+         operation: :purchased,
+         transaction_gid: token_response.id,
+         metadata: {  fingerprint: token_response.card.fingerprint,
+                      livemode: token_response.livemode,
+                      card_number: "XXXX-XXXX-XXXX-#{token_response.card.last4}",
+                      cardtype: token_response.card.type.downcase }}
+    end
+
     def do_void(options = {})
-      options.symbolize_keys!
-      options.assert_valid_keys(:transaction_gid)
-      transaction_gid = options[:transaction_gid]
-
-      response = gateway.void(transaction_gid, {})
-      record_transaction(response, 'voided')
-
-      if response.success?
-        order.void
-      else
-        @errors << "Void operation failed"
-        false
-      end
+      raise 'Stripe does not support void operation'
     end
 
     # Refunds the given transaction.
@@ -99,35 +87,11 @@ module NimbleshopStripe
       card_number = options[:card_number]
 
       response = gateway.refund(order.total_amount_in_cents, transaction_gid, card_number: card_number)
-      record_transaction(response, 'refunded')
+      ::Nimbleshop::PaymentTransactionRecorder.new(response: response, operation: :refunded, order: order).record
 
-      if response.success?
-        order.refund
-      else
-        @errors << "Refund failed"
-        false
-      end
+      response.success? ? order.refund : ( @errors << "Refund operation failed" )
 
-    end
-
-    def record_transaction(response, operation, additional_options = {}) # :nodoc:
-      transaction_gid = additional_options.fetch(:transaction_gid)
-
-      options = { operation:          'capture',
-                  params:             response.params,
-                  success:            true,
-                  metadata:           additional_options,
-                  transaction_gid:    transaction_gid }
-
-      if response.success?
-        options.update(amount: order.total_amount_in_cents)
-      end
-
-      order.payment_transactions.create(options)
-    end
-
-    def valid_card?(creditcard) # :nodoc:
-      true
+      response.success?
     end
 
   end

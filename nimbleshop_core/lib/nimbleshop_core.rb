@@ -2,6 +2,7 @@ require 'nimbleshop/engine'
 
 require 'nimbleshop/nimbleshop/util'
 require 'nimbleshop/nimbleshop/payment_util'
+require 'nimbleshop/nimbleshop/payment_transaction_recorder'
 require 'generators/nimbleshop/app/install_generator'
 
 # Why do we need to require all the gems individually ?

@@ -37,16 +37,24 @@ module NimbleshopAuthorizedotnet
       end
 
       response = gateway.authorize(order.total_amount_in_cents, creditcard, ::Nimbleshop::PaymentUtil.activemerchant_options(order))
-      record_transaction(response, 'authorized', card_number: creditcard.display_number, cardtype: creditcard.cardtype)
+
+      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                              response: response,
+                                                              operation: :authorized,
+                                                              transaction_gid: get_transaction_gid(response),
+                                                              metadata: { card_number: creditcard.display_number, cardtype: creditcard.cardtype})
+      recorder.record
 
       if response.success?
         order.update_attributes(payment_method: payment_method)
         order.authorize
       else
         @errors << 'Credit card was declined. Please try again!'
-        return false
       end
+
+      response.success?
     end
+
 
     # Creates purchase for the order amount.
     #
@@ -69,15 +77,21 @@ module NimbleshopAuthorizedotnet
       end
 
       response = gateway.purchase(order.total_amount_in_cents, creditcard)
-      record_transaction(response, 'purchased', card_number: creditcard.display_number, cardtype: creditcard.cardtype)
+      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                              response: response,
+                                                              operation: :purchased,
+                                                              transaction_gid: get_transaction_gid(response),
+                                                              metadata: { card_number: creditcard.display_number, cardtype: creditcard.cardtype})
+      recorder.record
 
       if response.success?
         order.update_attributes(payment_method: payment_method)
         order.purchase
       else
         @errors << 'Credit card was declined. Please try again!'
-        return false
       end
+
+      response.success?
     end
 
     # Captures the previously authorized transaction.
@@ -92,20 +106,21 @@ module NimbleshopAuthorizedotnet
     def do_kapture(options = {})
       options.symbolize_keys!
       options.assert_valid_keys(:transaction_gid)
-      tsx_id = options[:transaction_gid]
+      transaction_gid = options[:transaction_gid]
 
-      response = gateway.capture(order.total_amount_in_cents, tsx_id, {})
+      response = gateway.capture(order.total_amount_in_cents, transaction_gid, {})
 
-      pt = PaymentTransaction.find_by_transaction_gid! tsx_id
-      #record_transaction(response, 'captured')
-      record_transaction(response, 'captured', card_number: pt.metadata[:card_number], cardtype: pt.metadata[:cardtype])
+      pt = PaymentTransaction.find_by_transaction_gid! transaction_gid
+      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                              response: response,
+                                                              operation: :captured,
+                                                              transaction_gid: get_transaction_gid(response),
+                                                              metadata: { card_number: pt.metadata[:card_number], cardtype: pt.metadata[:cardtype]})
+      recorder.record
 
-      if response.success?
-        order.kapture
-      else
-        @errors << "Capture request failed"
-        false
-      end
+      response.success? ? order.kapture : ( @errors << "Capture operation failed" )
+
+      response.success?
     end
 
     # Voids the previously authorized transaction.
@@ -123,14 +138,14 @@ module NimbleshopAuthorizedotnet
       transaction_gid = options[:transaction_gid]
 
       response = gateway.void(transaction_gid, {})
-      record_transaction(response, 'voided')
 
-      if response.success?
-        order.void
-      else
-        @errors << "Void operation failed"
-        false
-      end
+      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order, response: response, operation: :voided,
+                                                                                                          transaction_gid: get_transaction_gid(response))
+      recorder.record
+
+      response.success? ?  order.void : (@errors << "Void operation failed")
+
+      response.success?
     end
 
     # Refunds the given transaction.
@@ -150,42 +165,27 @@ module NimbleshopAuthorizedotnet
       card_number = options[:card_number]
 
       response = gateway.refund(order.total_amount_in_cents, transaction_gid, card_number: card_number)
-      record_transaction(response, 'refunded')
 
-      if response.success?
-        order.refund
-      else
-        @errors << "Refund failed"
-        false
-      end
+      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order, response: response, operation: :refunded,
+                                                                                                          transaction_gid: get_transaction_gid(response))
+      recorder.record
 
-    end
+      response.success? ? order.refund : (@errors << "Refund failed")
 
-    def record_transaction(response, operation, additional_options = {}) # :nodoc:
-      #
-      # Following code invokes response.authorization to get transaction id. Note that this method can be called
-      # after capture or refund. And it feels weird to call +authorization+ when the operation was +capture+.
-      # However this is how ActiveMerchant works. It sets transaction id in +authorization+ key.
-      #
-      # https://github.com/Shopify/active_merchant/blob/master/lib/active_merchant/billing/gateways/authorize_net.rb#L283
-      #
-      transaction_gid = response.authorization
-
-      options = { operation:          operation,
-                  params:             response.params,
-                  success:            response.success?,
-                  metadata:           additional_options,
-                  transaction_gid:    transaction_gid }
-
-      if response.success?
-        options.update(amount: order.total_amount_in_cents)
-      end
-
-      order.payment_transactions.create(options)
+      response.success?
     end
 
     def valid_card?(creditcard) # :nodoc:
       creditcard && creditcard.valid?
+    end
+
+    # Following code invokes response.authorization to get transaction id. Note that this method can be called
+    # after capture or refund. And it feels weird to call +authorization+ when the operation was +capture+.
+    # However this is how ActiveMerchant works. It sets transaction id in +authorization+ key.
+    #
+    # https://github.com/Shopify/active_merchant/blob/master/lib/active_merchant/billing/gateways/authorize_net.rb#L283
+    def get_transaction_gid(response)
+      response.authorization
     end
 
   end

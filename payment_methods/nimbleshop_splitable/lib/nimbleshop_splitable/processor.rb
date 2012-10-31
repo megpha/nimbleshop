@@ -71,7 +71,7 @@ module NimbleshopSplitable
     end
 
     def do_purchase(options = {})
-      add_to_order(options, 'purchased')
+      record_transaction(options, 'purchased')
       order.update_attributes(payment_method: payment_method)
       order.purchase!
 
@@ -79,14 +79,14 @@ module NimbleshopSplitable
     end
 
     def do_void(options = {})
-      add_to_order(options, 'voided')
+      record_transaction(options, 'voided')
       order.update_attributes(payment_method: payment_method)
       order.void!
 
       true
     end
 
-    def add_to_order(params, operation)
+    def record_transaction(params, operation)
       order.payment_transactions.create(operation: operation,
                                         success: true,
                                         transaction_gid: params[:transaction_id],

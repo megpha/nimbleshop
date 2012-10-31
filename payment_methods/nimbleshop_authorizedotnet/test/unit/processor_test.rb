@@ -87,7 +87,7 @@ module Processor
 
       playcasette('authorize.net/capture-failure') do
         assert_equal false, @processor.kapture(transaction_gid: @tsx_id)
-        assert_equal 'Capture request failed', @processor.errors.first
+        assert_equal 'Capture operation failed', @processor.errors.first
       end
 
       @order.reload
@@ -177,7 +177,7 @@ module Processor
       assert        @order.voided?
     end
 
-    test 'when capture fails' do
+    test 'when void fails' do
       playcasette('authorize.net/void-failure') do
         assert_equal false, @processor.void(transaction_gid: @tsx_id)
       end

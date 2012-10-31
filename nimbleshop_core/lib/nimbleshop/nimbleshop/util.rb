@@ -1,4 +1,3 @@
-
 module Nimbleshop
   class Util
 
