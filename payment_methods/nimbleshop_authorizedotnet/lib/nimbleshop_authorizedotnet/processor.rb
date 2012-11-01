@@ -106,16 +106,17 @@ module NimbleshopAuthorizedotnet
     def do_kapture(options = {})
       options.symbolize_keys!
       options.assert_valid_keys(:transaction_gid)
-      transaction_gid = options[:transaction_gid]
+      transaction_gid = options.fetch :transaction_gid
+      payment_transaction = PaymentTransaction.find_by_transaction_gid! transaction_gid
 
       response = gateway.capture(order.total_amount_in_cents, transaction_gid, {})
 
-      pt = PaymentTransaction.find_by_transaction_gid! transaction_gid
       recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
                                                               response: response,
                                                               operation: :captured,
                                                               transaction_gid: get_transaction_gid(response),
-                                                              metadata: { card_number: pt.metadata[:card_number], cardtype: pt.metadata[:cardtype]})
+                                                              metadata: { card_number: payment_transaction.metadata[:card_number],
+                                                                          cardtype: payment_transaction.metadata[:cardtype]})
       recorder.record
 
       response.success? ? order.kapture : ( @errors << "Capture operation failed" )

@@ -5,7 +5,7 @@
     <div class='well'>
       <div class='control-group'>
         <div class='controls'>
-          <% PaymentMethod.order('name desc').each do |payment_method| %>
+          <% @payment_methods.each do |payment_method| %>
             <%= self.send("nimbleshop_#{payment_method.demodulized_underscore}_payment_form", current_order) %>
           <% end %>
         </div>

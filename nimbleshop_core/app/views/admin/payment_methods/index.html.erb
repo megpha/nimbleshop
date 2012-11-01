@@ -1,4 +1,22 @@
-<% page_title 'payment methods' %>
+<% page_title 'Payment methods' %>
+
+<div>
+  <h1 class='ns-page-title'>Payment methods</h1>
+
+  <% if @disabled_payment_methods.any? %>
+    <div class="btn-group new-action">
+      <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">Add payment method <span class="caret"></span> </a>
+      <ul class="dropdown-menu">
+        <% @disabled_payment_methods.each do |payment_method| %>
+          <%= link_to payment_method.name, enable_admin_payment_method_path(payment_method), method: :put %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class='clear'></div>
+</div>
+
+<br />
 
 <% @payment_methods.each do |payment_method| %>
   <%= nimbleshop_crud_form(payment_method) %>

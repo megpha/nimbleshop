@@ -48,10 +48,10 @@
         Expiration date
         </p>
         <div class='controls'>
-          <%= f.date_select :expires_on,  discard_day: true, 
-            start_year: Date.today.year, 
-            end_year: (Date.today.year + 10), 
-            add_month_numbers: true, 
+          <%= f.date_select :expires_on,  discard_day: true,
+            start_year: Date.today.year,
+            end_year: (Date.today.year + 10),
+            add_month_numbers: true,
             order: [:day, :month, :year] %>
         </div>
       </div>
@@ -86,6 +86,9 @@ $(document).ready(function(){
     .bind("ajax:complete", function(evt, data, status, xhr){
       var $btn = $('#authorizedotnet-payment-form').find('.btn-primary');
       $btn.attr('value', 'Submit').removeAttr('disabled');
+    })
+    .bind("ajax:error", function(evt, xhr, status, error){
+      alert("Something has gone wrong")
     })
 });
 </script>

@@ -12,7 +12,12 @@ Rails.application.routes.draw do
     resource  :shop,            only: [:update, :edit]
 
     resource  :payment_gateway
-    resources :payment_methods
+    resources :payment_methods do
+      member do
+        put :enable
+        put :disable
+      end
+    end
 
     resources :products,        except: [:show]
     resources :product_groups

@@ -2,6 +2,10 @@ class PaymentMethod < ActiveRecord::Base
 
   store :metadata
 
+  scope :ascending, order('id asc')
+  scope :enabled,  where(enabled: true)
+  scope :disabled, where(enabled: false)
+
   include Permalink::Builder
 
   # By default payment_method does not require that application must use SSL.

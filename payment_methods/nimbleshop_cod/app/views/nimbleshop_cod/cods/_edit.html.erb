@@ -4,12 +4,10 @@
     <h2> Cash on delivery </h2>
 
      <div class='edit_link'>
-       <%= link_to nimbleshop_cod.cod_path,  confirm: 'Do you really want to delete Cash on delivery payment method',
-                   class: 'nimbleshop-payment-method-delete',
-                   method: :delete,
-                   remote: true do %>
-         <i class='icon-remove icon-white'></i>
-       <% end %>
+      <%= link_to main_app.disable_admin_payment_method_path(NimbleshopCod::Cod.first),
+                                                    class: 'nimbleshop-payment-method-delete', method: :put do %>
+          Disable
+      <% end %>
      </div>
     <div class='clear'></div>
   </div>
@@ -20,9 +18,9 @@
   $(function(){
 
     $('#nimbleshop-cod-payment-method-edit').toggle(function(){
-      $('#nimbleshop-cod-form-well').show(); 
+      $('#nimbleshop-cod-form-well').show();
     }, function(){
-      $('#nimbleshop-cod-form-well').hide(); 
+      $('#nimbleshop-cod-form-well').hide();
     });
 
   })

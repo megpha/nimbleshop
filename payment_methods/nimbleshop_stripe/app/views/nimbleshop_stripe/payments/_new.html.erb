@@ -97,7 +97,11 @@ $(document).ready(function(){
         $.ajax({
           type: 'POST',
           url: $this.attr('action'),
-          data: $this.serializeArray()
+          data: $this.serializeArray(),
+          error: function(){
+            $('[data-behavior~=stripe-submit-button]').attr('value', 'Submit').removeAttr('disabled');
+            alert("Something has gone wrong")
+          }
         });
 
 

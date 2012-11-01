@@ -4,9 +4,9 @@
     <h2>Stripe</h2>
     <div class="edit_link">
       <%= link_to 'Edit', '#', class: 'nimbleshop-payment-method-edit', id: 'nimbleshop-stripe-payment-method-edit' %>
-      <%= link_to nimbleshop_stripe.stripe_path, class: 'nimbleshop-payment-method-delete',
-                                  confirm: 'Do you really want to delete Stripe payment method', method: :delete, remote: true do %>
-          <i class='icon-remove icon-white'></i>
+      <%= link_to main_app.disable_admin_payment_method_path(NimbleshopStripe::Stripe.first),
+                                                    class: 'nimbleshop-payment-method-delete', method: :put do %>
+          Disable
       <% end %>
     </div>
 
