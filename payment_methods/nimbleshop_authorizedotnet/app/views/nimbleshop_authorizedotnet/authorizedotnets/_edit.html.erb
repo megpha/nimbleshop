@@ -1,30 +1,66 @@
-<div class='payment-method-engine-well'>
+<% payment_method = NimbleshopAuthorizedotnet::Authorizedotnet.first %>
 
-  <div>
-    <h2>Authorize.net</h2>
-    <div class="edit_link">
-      <%= link_to 'Edit', '#', class: 'nimbleshop-payment-method-edit', id: 'nimbleshop-authorizedotnet-payment-method-edit' %>
-      <%= link_to main_app.disable_admin_payment_method_path(NimbleshopAuthorizedotnet::Authorizedotnet.first),
-                                                    class: 'nimbleshop-payment-method-delete', method: :put do %>
-          Disable
-      <% end %>
+<%= content_tag :div, style: 'display:none', data: { behavior: "payment-method-form-#{payment_method.permalink}" } do %>
+  <div style="width:200px;margin-left:60px;"> <%= nimbleshop_authorizedotnet_picture_on_admin_payment_methods %> </div>
+  <br />
+
+  <%= form_for payment_method,  url: '/nimbleshop_authorizedotnet/authorizedotnet',
+                                                      remote: true,
+                                                      html: { method: 'put',
+                                                              id: 'nimbleshop-authorizedotnet-form',
+                                                              class: 'nimbleshop-payment-method-form form-horizontal'} do |f| %>
+
+    <fieldset>
+      <div class='control-group'>
+        <%= f.label :login_id, nil, class: 'control-label' %>
+        <div class='controls'>
+          <%= f.text_field :login_id, class: 'span6' %>
+        </div>
+      </div>
+
+      <div class='control-group'>
+        <%= f.label :transaction_key, nil, class: 'control-label' %>
+        <div class='controls'>
+          <%= f.text_field :transaction_key, class: 'span6' %>
+        </div>
+      </div>
+
+      <div class='control-group'>
+        <%= f.label :business_name, nil, class: 'control-label' %>
+        <%= link_to '?', '#', 'data-content' => 'Please enter the name of the company as it would appear in the credit card statement. If are not sure what name would appear in the credit card statements then consult your merchant account provider.',
+                          'data-original-title' => 'Business name' %>
+        <div class='controls'>
+          <%= f.text_field :business_name, class: 'span6' %>
+        </div>
+      </div>
+
+      <div class='control-group'>
+        <div class='controls'>
+          <label class='checkbox'>
+            <%= f.check_box :mode, {}, 'test', 'production' %> Enable test mode
+            <%= link_to '?', '#', class: 'help', 'data-content' => 'In the test mode real credit card numbers are not accepted.',
+                              'data-original-title' => 'Test mode' %>
+          </label>
+        </div>
+      </div>
+
+      <div class='control-group'>
+        <div class='controls'>
+          <label class='checkbox'>
+            <%= f.check_box :ssl, {}, 'enabled', 'disabled' %> Enable SSL requirement
+            <%= link_to '?', '#', class: 'help', 'data-content' => 'Enabling SSL requirement will force the payment page to be on SSL.',
+                              'data-original-title' => 'SSL requirement' %>
+          </label>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <div class='form-actions'>
+      <%= f.submit('Submit', class: 'btn btn-primary') %>
+      &nbsp;
+      <%= link_to 'Disable', main_app.disable_admin_payment_method_path(payment_method), class: 'disable-payment-method-link', method: :put %>
     </div>
 
-
-    <div class='clear'></div>
-  </div>
-
-  <%= render partial: '/nimbleshop_authorizedotnet/authorizedotnets/form' %>
-</div>
-
-<script>
-  $(function(){
-
-    $('#nimbleshop-authorizedotnet-payment-method-edit').toggle(function(){
-      $('#nimbleshop-authorizedotnet-form-well').show();
-    }, function(){
-      $('#nimbleshop-authorizedotnet-form-well').hide();
-    });
-
-  })
-</script>
+  <% end %>
+<% end %>

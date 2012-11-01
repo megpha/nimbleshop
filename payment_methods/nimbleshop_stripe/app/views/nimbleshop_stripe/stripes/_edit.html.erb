@@ -1,30 +1,66 @@
-<div class='payment-method-engine-well'>
+<% payment_method = NimbleshopStripe::Stripe.first %>
 
-  <div>
-    <h2>Stripe</h2>
-    <div class="edit_link">
-      <%= link_to 'Edit', '#', class: 'nimbleshop-payment-method-edit', id: 'nimbleshop-stripe-payment-method-edit' %>
-      <%= link_to main_app.disable_admin_payment_method_path(NimbleshopStripe::Stripe.first),
-                                                    class: 'nimbleshop-payment-method-delete', method: :put do %>
-          Disable
-      <% end %>
-    </div>
-
-
-    <div class='clear'></div>
+<%= content_tag :div, style: 'display:none', data: { behavior: "payment-method-form-#{payment_method.permalink}" } do %>
+  <div style="margin-left:50px;margin-bottom:20px;">
+    <%= nimbleshop_stripe_picture_on_admin_payment_methods %>
   </div>
 
-  <%= render partial: '/nimbleshop_stripe/stripes/form' %>
-</div>
+  <%= form_for payment_method,  url: '/nimbleshop_stripe/stripe',
+                                                      remote: true,
+                                                      html: { method: 'put',
+                                                              id: 'nimbleshop-stripe-form',
+                                                              class: 'nimbleshop-payment-method-form form-horizontal'} do |f| %>
 
-<script>
-  $(function(){
+    <fieldset>
+      <div class='control-group'>
+        <%= f.label :publishable_key, nil, class: 'control-label' %>
+        <div class='controls'>
+          <%= f.text_field :publishable_key, class: 'span6' %>
+        </div>
+      </div>
 
-    $('#nimbleshop-stripe-payment-method-edit').toggle(function(){
-      $('#nimbleshop-stripe-form-well').show();
-    }, function(){
-      $('#nimbleshop-stripe-form-well').hide();
-    });
+      <div class='control-group'>
+        <%= f.label :secret_key, nil, class: 'control-label' %>
+        <div class='controls'>
+          <%= f.text_field :secret_key, class: 'span6' %>
+        </div>
+      </div>
 
-  })
-</script>
+      <div class='control-group'>
+        <%= f.label :business_name, nil, class: 'control-label' %>
+        <%= link_to '?', '#', 'data-content' => 'Please enter the name of the company as it would appear in the credit card statement. If are not sure what name would appear in the credit card statements then consult your merchant account provider.',
+                          'data-original-title' => 'Business name' %>
+        <div class='controls'>
+          <%= f.text_field :business_name, class: 'span6' %>
+        </div>
+      </div>
+
+      <div class='control-group'>
+        <div class='controls'>
+          <label class='checkbox'>
+            <%= f.check_box :mode, {}, 'test', 'production' %> Enable test mode
+            <%= link_to '?', '#', class: 'help', 'data-content' => 'In the test mode real credit card numbers are not accepted.',
+                              'data-original-title' => 'Test mode' %>
+          </label>
+        </div>
+      </div>
+
+      <div class='control-group'>
+        <div class='controls'>
+          <label class='checkbox'>
+            <%= f.check_box :ssl, {}, 'enabled', 'disabled' %> Enable SSL requirement
+            <%= link_to '?', '#', class: 'help', 'data-content' => 'Enabling SSL requirement will force the payment page to be on SSL.',
+                              'data-original-title' => 'SSL requirement' %>
+          </label>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <div class='form-actions'>
+      <%= f.submit('Submit', class: 'btn btn-primary') %>
+      &nbsp;
+      <%= link_to 'Disable', main_app.disable_admin_payment_method_path(payment_method), class: 'disable-payment-method-link', method: :put %>
+    </div>
+  <% end %>
+<% end %>

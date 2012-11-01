@@ -102,3 +102,11 @@ footer .content a {
 .handle-pictures-umbrella .pictures-list {
   margin-left: -155px;
 }
+
+.control-group a.help {
+  float: none;
+}
+
+.disable-payment-method-link {
+  float: right;
+}

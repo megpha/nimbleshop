@@ -1,30 +1,53 @@
-<div class='payment-method-engine-well'>
+<% payment_method = NimbleshopSplitable::Splitable.first %>
 
-   <div>
-    <h2> Splitable </h2>
+<%= content_tag :div, style: 'display:none', data: { behavior: "payment-method-form-#{payment_method.permalink}" } do %>
 
-     <div class="edit_link">
-       <%= link_to 'Edit', '#', class: "nimbleshop-payment-method-edit", id: "nimbleshop-splitable-payment-method-edit" %>
-      <%= link_to main_app.disable_admin_payment_method_path(NimbleshopSplitable::Splitable.first),
-                                                    class: 'nimbleshop-payment-method-delete', method: :put do %>
-          Disable
-      <% end %>
-     </div>
-    <div class='clear'></div>
-  </div>
+  <div style="width:100px;margin-left:90px;"><%= nimbleshop_splitable_picture_on_admin_payment_methods %></div>
+  <br />
 
-  <%= render partial: '/nimbleshop_splitable/splitables/form' %>
 
-</div>
+  <%= form_for NimbleshopSplitable::Splitable.first,  url: '/nimbleshop_splitable/splitable',
+                                                      remote: true,
+                                                      html: { method: 'put',
+                                                              id: 'nimbleshop-splitable-form',
+                                                              class: 'nimbleshop-payment-method-form form-horizontal'} do |f| %>
 
-<script>
-  $(function(){
+    <fieldset>
+      <div class="control-group">
+        <%= f.label :api_key, nil, class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :api_key, class: 'span6' %>
+        </div>
+      </div>
 
-    $('#nimbleshop-splitable-payment-method-edit').toggle(function(){
-      $('#nimbleshop-splitable-form-well').show();
-    }, function(){
-      $('#nimbleshop-splitable-form-well').hide();
-    });
+      <div class="control-group">
+        <%= f.label :api_secret, nil, class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :api_secret, class: 'span6' %>
+        </div>
+      </div>
 
-  })
-</script>
+      <div class="control-group">
+        <%= f.label :expires_in, nil, class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :expires_in, class: 'span6' %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="controls">
+          <label class='checkbox'>
+            <%= f.check_box :mode, {}, 'test', 'production' %> Enable test mode
+          </label>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <div class="form-actions">
+      <%= link_to 'Disable', main_app.disable_admin_payment_method_path(payment_method), class: 'disable-payment-method-link', method: :put %>
+      &nbsp;
+      <%= f.submit('Submit', class: 'btn btn-primary') %>
+    </div>
+  <% end %>
+<% end %>

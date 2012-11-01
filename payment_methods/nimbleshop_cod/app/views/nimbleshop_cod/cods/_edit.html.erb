@@ -1,27 +1,24 @@
-<div class='payment-method-engine-well'>
+<% payment_method = NimbleshopCod::Cod.first %>
 
-   <div>
-    <h2> Cash on delivery </h2>
+<%= content_tag :div, style: 'display:none', data: { behavior: "payment-method-form-#{payment_method.permalink}" } do %>
 
-     <div class='edit_link'>
-      <%= link_to main_app.disable_admin_payment_method_path(NimbleshopCod::Cod.first),
-                                                    class: 'nimbleshop-payment-method-delete', method: :put do %>
-          Disable
-      <% end %>
-     </div>
-    <div class='clear'></div>
-  </div>
+  <%= form_for payment_method,  url: '/nimbleshop_cod/cod',
+                                                      remote: true,
+                                                      html: { method: 'put',
+                                                              id: 'nimbleshop-cod-form',
+                                                              class: 'nimbleshop-payment-method-form form-horizontal'} do |f| %>
 
-</div>
+    <fieldset>
+      <div class="control-group">
+        <div class="controls">
+        </div>
+      </div>
+    </fieldset>
 
-<script>
-  $(function(){
-
-    $('#nimbleshop-cod-payment-method-edit').toggle(function(){
-      $('#nimbleshop-cod-form-well').show();
-    }, function(){
-      $('#nimbleshop-cod-form-well').hide();
-    });
-
-  })
-</script>
+    <div class="form-actions">
+      <%= f.submit('Submit', class: 'btn btn-primary') %>
+      &nbsp;
+      <%= link_to 'Disable', main_app.disable_admin_payment_method_path(payment_method), class: 'disable-payment-method-link', method: :put %>
+    </div>
+  <% end %>
+<% end %>

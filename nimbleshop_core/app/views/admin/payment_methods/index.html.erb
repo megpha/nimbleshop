@@ -18,7 +18,20 @@
 
 <br />
 
-<% @payment_methods.each do |payment_method| %>
-  <%= nimbleshop_crud_form(payment_method) %>
-  <br />
-<% end %>
+
+<div class="tabbable tabs-left" style="padding:20px;border: 1px solid #eee">
+  <ul class="nav nav-tabs">
+    <% @payment_methods.each do |payment_method| %>
+      <li>
+        <%= link_to payment_method.name, '#', data: { toggle: :tab,
+                                                      behavior: "payment-method-edit-link",
+                                                      payment_method_permalink: payment_method.permalink } %>
+      </li>
+    <% end %>
+  </ul>
+  <div class="tab-content">
+    <% @payment_methods.each do |payment_method| %>
+      <%= nimbleshop_crud_form(payment_method) %>
+    <% end %>
+  </div>
+</div>

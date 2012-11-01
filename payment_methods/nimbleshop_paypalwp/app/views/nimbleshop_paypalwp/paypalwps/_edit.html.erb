@@ -1,30 +1,41 @@
-<div class='payment-method-engine-well'>
+<% payment_method = NimbleshopPaypalwp::Paypalwp.first %>
 
-   <div>
-    <h2>Paypal websites payment standard</h2>
-    <div class="edit_link">
-      <%= link_to 'Edit', '#', class: 'nimbleshop-payment-method-edit', id: 'nimbleshop-paypalwp-payment-method-edit' %>
-      <%= link_to main_app.disable_admin_payment_method_path(NimbleshopPaypalwp::Paypalwp.first),
-                                                    class: 'nimbleshop-payment-method-delete', method: :put do %>
-          Disable
-      <% end %>
+<%= content_tag :div, style: 'display:none', data: { behavior: "payment-method-form-#{payment_method.permalink}" } do %>
+
+  <div style="width:100px;margin-left:50px;"> <%= nimbleshop_paypalwp_picture_on_admin_payment_methods %> </div>
+  <br />
+
+  <%= form_for payment_method,  url: '/nimbleshop_paypalwp/paypalwp',
+                                                      remote: true,
+                                                      html: { method: 'put',
+                                                              id: 'nimbleshop-paypalwp-form',
+                                                              class: 'nimbleshop-payment-method-form form-horizontal'} do |f| %>
+
+
+    <fieldset>
+
+      <div class="control-group">
+        <%= f.label :merchant_email, nil, class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :merchant_email, class: 'span6' %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="controls">
+          <label class='checkbox'>
+            <%= f.check_box :mode, {}, 'test', 'production' %> Enable sandbox mode
+          </label>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <div class="form-actions">
+      <%= f.submit('Submit', class: 'btn btn-primary') %>
+      &nbsp;
+      <%= link_to 'Disable', main_app.disable_admin_payment_method_path(payment_method), class: 'disable-payment-method-link', method: :put %>
     </div>
+  <% end %>
 
-
-    <div class='clear'></div>
-   </div>
-
-  <%= render partial: '/nimbleshop_paypalwp/paypalwps/form' %>
-</div>
-
-<script>
-  $(function(){
-
-    $('#nimbleshop-paypalwp-payment-method-edit').toggle(function(){
-      $('#nimbleshop-paypalwp-form-well').show();
-    }, function(){
-      $('#nimbleshop-paypalwp-form-well').hide();
-    });
-
-  })
-</script>
+<% end %>
