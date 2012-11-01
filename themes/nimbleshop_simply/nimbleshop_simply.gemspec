@@ -18,6 +18,6 @@ Gem::Specification.new do |gem|
 
   gem.test_files = Dir['test/**/*']
 
-  gem.add_dependency 'jquery-rails', '= 2.1.1'
+  gem.add_dependency 'jquery-rails', '~> 2.1.1'
   gem.add_dependency 'fancybox-rails', '= 0.1.4'
 end
