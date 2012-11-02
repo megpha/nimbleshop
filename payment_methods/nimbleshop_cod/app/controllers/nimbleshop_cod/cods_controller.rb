@@ -4,20 +4,25 @@ module NimbleshopCod
 
     before_filter :load_payment_method
 
-    def destroy
+    def update
+      alert_msg = if @payment_method.update_attributes(post_params[:cod])
+                    msg = "Record has been updated"
+                    %Q[alert("#{msg}")]
+                  else
+                    msg =  @payment_method.errors.full_messages.first
+                    %Q[alert("#{msg}")]
+                  end
+
       respond_to do |format|
-        if @payment_method.destroy
-          format.js {
-            flash[:notice] = 'Cash on delivery record was successfully deleted'
-            render js: "window.location = '/admin/payment_methods'"
-          }
-        else
-          format.js { render js: 'Cash on delivery record could not be deleted. Please try again later.' }
-        end
+        format.js { render js: alert_msg }
       end
     end
 
     private
+
+    def post_params
+      params.permit(cod: [:name])
+    end
 
     def load_payment_method
       @payment_method = NimbleshopCod::Cod.first
