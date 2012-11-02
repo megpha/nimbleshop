@@ -18,7 +18,7 @@ module NimbleshopStripe
     end
 
     def do_authorize(options = {})
-      raise "Stripe does not support authorize operation"
+      do_purchase options
     end
 
     # Creates purchase for the order amount.
