@@ -13,7 +13,7 @@
 </p>
 
 <%= form_for @creditcard, url: nimbleshop_stripe.payment_path(format: :js), remote: true, html: { id: 'stripe-payment-form', class: 'form-horizontal' } do |f| %>
-  <div class='nimbleshop_stripe_umbrella'>
+  <div class='nimbleshop_stripe_umbrella' style="margin-left:-125px;">
     <% if @creditcard.errors.any? %>
       <div class="alert alert-error">
         <ul>
