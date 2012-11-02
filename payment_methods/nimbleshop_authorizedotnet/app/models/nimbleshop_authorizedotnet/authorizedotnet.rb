@@ -1,14 +1,15 @@
 module NimbleshopAuthorizedotnet
   class Authorizedotnet < PaymentMethod
 
-    store_accessor :metadata, :login_id, :transaction_key, :business_name, :mode, :ssl
+    store_accessor :metadata, :api_login_id, :transaction_key, :business_name, :mode, :ssl
 
     before_save :set_mode, :set_ssl
 
-    validates_presence_of :login_id, :transaction_key, :business_name
+    validates_presence_of :api_login_id, message: "^Api Login Id can't be blank"
+    validates_presence_of :transaction_key, :business_name
 
     def credentials
-      { login: login_id, password: transaction_key }
+      { login: api_login_id, password: transaction_key }
     end
 
     def use_ssl?

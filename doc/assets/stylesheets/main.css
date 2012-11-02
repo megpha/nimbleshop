@@ -94,6 +94,10 @@ body {
 	width: 69em;
 	}
 
+#container .wrapper {
+  -webkit-box-shadow: 0 0 30px #E1E1E3;
+}
+
 #topNav {
 	padding: 0;
 	color: #565656;
@@ -486,8 +490,9 @@ div.important p, div.caution p, div.warning p, div.note p, div.info p {
 
 p, #mainCol ul li {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 25px;
+  font-size: 16px;
+  line-height: 27px;
+  color: #52585d;
 }
 
 #mainCol ul li {

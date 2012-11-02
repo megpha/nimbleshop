@@ -31,7 +31,7 @@ payment_methods_003:
   type: NimbleshopAuthorizedotnet::Authorizedotnet
   permalink: authorizedotnet
   metadata: "--- \n\
-    :login_id: 26Daqx7Jtw7R\n\
+    :api_login_id: 26Daqx7Jtw7R\n\
     :mode: test\n\
     :transaction_key: 66JWf57KKc82W9y6\n\
     :business_name: Nimbleshop LLC\n"

@@ -26,8 +26,7 @@ After signing up you will see +API Credentials+ which might look  like this.
 h4. Update nimbleShop to use the new Authorize.net credentials
 
 * Visit "Admin tab Payment methods":http://localhost:3000/admin/payment_methods .
-* Click 'Edit' next to 'Authorize.net'.
-* Update +API Login ID+ and +Transaction Key+.
+* Update +Api Login Id+ and +Transaction Key+.
 
 h3. Paying using Credit card
 

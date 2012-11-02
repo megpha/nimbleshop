@@ -11,7 +11,7 @@ class PaymentMethodAuthorizeNetTest < ActiveSupport::TestCase
 
   test "should save the record" do
     pm = NimbleshopAuthorizedotnet::Authorizedotnet.new(name: 'Authorize.net', description: 'this is description')
-    pm.login_id = 'FWERSDEED093d'
+    pm.api_login_id = 'FWERSDEED093d'
     pm.transaction_key = 'SDFSDFSFSF423433SDFSFSSFSFSF334'
     pm.business_name = 'BigBinary LLC'
     assert pm.save

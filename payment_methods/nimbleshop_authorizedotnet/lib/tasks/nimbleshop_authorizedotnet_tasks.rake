@@ -18,7 +18,7 @@ namespace :nimbleshop_authorizedotnet do
     else
       NimbleshopAuthorizedotnet::Authorizedotnet.create!(
         {
-          login_id: Nimbleshop.config.authorizedotnet.login_id,
+          api_login_id: Nimbleshop.config.authorizedotnet.api_login_id,
           transaction_key: Nimbleshop.config.authorizedotnet.transaction_key,
           business_name: 'Nimbleshop LLC',
           name: 'Authorize.net',

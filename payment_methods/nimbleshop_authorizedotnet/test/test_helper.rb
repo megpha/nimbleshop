@@ -20,7 +20,9 @@ class ActiveSupport::TestCase
   self.use_transactional_fixtures = false
   setup do
     DatabaseCleaner.start
-    ActiveRecord::Fixtures.create_fixtures("#{File.dirname(__FILE__)}/../../../nimbleshop_core/test/fixtures", ['shops', 'link_groups', 'payment_methods'])
+    ActiveRecord::Fixtures.create_fixtures("#{File.dirname(__FILE__)}/../../../nimbleshop_core/test/fixtures", ['shops',
+                                                                                                                'link_groups',
+                                                                                                                'payment_methods'])
   end
   teardown do
     DatabaseCleaner.clean
