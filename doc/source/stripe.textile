@@ -8,20 +8,20 @@ h3. Test account
 
 Stripe provides "test account":https://manage.stripe.com/#test/dashboard which can be used to test the application before the application goes live. nimbleShop comes with stripe test account credentials. However if you want to login at stripe and see the transaction details for yourself then you should get your own account.
 
-Follow the instructions given below to get your stripe test account.
+Follow the instructions given below to get your stripe test account. If
+you do not want to setup your own stripe account info at this time then
+skip the "Sign up" step.
 
 h4. Sign up
 
-Visit  "stripe dashboard":https://manage.stripe.com and sign up.
-
-After signing up  go to "Your Account" > "Account Settings" > "API Keys"
+Visit  "stripe dashboard":https://manage.stripe.com and sign up.  After signing up  go to "Your Account" > "Account Settings" > "API Keys" at stripe site.
 
 h4. Update nimbleShop to use the new stripe test credentials
 
 * Visit "Admin tab Payment methods":http://localhost:3000/admin/payment_methods .
-* Delete the Authorize.net payment method.
-* On command prompt execute `rake nimbleshop_stripe:load_record` to populate stripe payment record.
+* Disable the Authorize.net payment method.
 * Now visit "Admin tab Payment methods":http://localhost:3000/admin/payment_methods .
+* Click on "Add payment method" pulldown menu and click on "Stripe" .
 * Update +Publishable key+ and +Secret key+ for stripe.
 
 h3. Paying using Credit card
