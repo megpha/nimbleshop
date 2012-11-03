@@ -19,30 +19,16 @@ module NimbleshopSplitable
     end
 
     def update
-      respond_to do |format|
-        if @payment_method.update_attributes(post_params[:splitable])
-          format.js  {
-            flash[:notice] = "Splitable record was successfully updated"
-            render js: "window.location = '/admin/payment_methods'"
-          }
-        else
-          msg =  @payment_method.errors.full_messages.first
-          error =  %Q[alert("#{msg}")]
-          format.js { render js: error }
-        end
-      end
-    end
+      alert_msg = if @payment_method.update_attributes(post_params[:splitable])
+                    msg = "Record has been updated"
+                    %Q[alert("#{msg}")]
+                  else
+                    msg =  @payment_method.errors.full_messages.first
+                    %Q[alert("#{msg}")]
+                  end
 
-    def destroy
       respond_to do |format|
-        if @payment_method.destroy
-          format.js {
-            flash[:notice] = "Splitable record was successfully deleted"
-            render js: "window.location = '/admin/payment_methods'" #TODO hardcoded url
-          }
-        else
-          format.js { render js: 'Splitable record could not be deleted. Please try again later.' }
-        end
+        format.js { render js: alert_msg }
       end
     end
 

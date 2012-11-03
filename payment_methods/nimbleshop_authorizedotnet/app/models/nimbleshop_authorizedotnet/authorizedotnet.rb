@@ -19,8 +19,8 @@ module NimbleshopAuthorizedotnet
     def kapture!(order, processor_klass = nil)
       processor_klass ||= NimbleshopAuthorizedotnet::Processor
       processor = processor_klass.new(order: order, payment_method: self)
-      processor.kapture
-      order.kapture!
+
+      processor.kapture transaction_gid: order.payment_transactions.last.transaction_gid
     end
 
     private

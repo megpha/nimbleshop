@@ -6,7 +6,7 @@ class Creditcard
   include ActiveModel::Validations::Callbacks
 
   attr_accessor :cvv, :expires_on, :number, :first_name, :last_name, :address1, :address2,
-                :cardtype, :month, :year, :state, :zipcode, :perform_validations
+                :cardtype, :month, :year, :state, :zipcode
 
   alias :verification_value :cvv # ActiveMerchant needs this
 
@@ -16,12 +16,12 @@ class Creditcard
 
   validates_presence_of :last_name, :first_name
 
-  validates_presence_of :number,     message: "^Please enter credit card number", if: :perform_validations
-  validates_numericality_of :number, message: "^Please check the credit card number you entered", if: :perform_validations
-  validates_presence_of :cvv,        message: "^Please enter CVV", if: :perform_validations
+  validates_presence_of :number,     message: "^Please enter credit card number"
+  validates_numericality_of :number, message: "^Please check the credit card number you entered"
+  validates_presence_of :cvv,        message: "^Please enter CVV"
 
-  validate  :validation_of_cardtype,        if: lambda { |r| perform_validations && r.errors.empty? }
-  validate  :validation_by_active_merchant, if: lambda { |r| perform_validations && r.errors.empty? }
+  validate  :validation_of_cardtype,        if: lambda { |r| r.errors.empty? }
+  validate  :validation_by_active_merchant, if: lambda { |r| r.errors.empty? }
 
   def initialize(attrs = {})
     sanitize_month_and_year(attrs)
@@ -29,9 +29,6 @@ class Creditcard
     attrs.each do | name, value |
       send("#{name}=", value)
     end
-
-    # stripe is the only one that does not want validations
-    perform_validations = true
   end
 
   def verification_value?

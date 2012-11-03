@@ -9,7 +9,6 @@ module NimbleshopStripe
       address_attrs     = order.final_billing_address.to_credit_card_attributes
       creditcard_attrs  = params[:creditcard].merge(address_attrs)
       creditcard        = Creditcard.new(creditcard_attrs)
-      creditcard.perform_validations = false
 
       payment_method    = NimbleshopStripe::Stripe.first
       processor         = NimbleshopStripe::Processor.new({order: order, payment_method: payment_method})

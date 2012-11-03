@@ -10,7 +10,6 @@ FactoryGirl.define do
     month         5
     year          2015
     state         'Florida'
-    perform_validations true
 
     trait :visa do
       number    '4007000000027'

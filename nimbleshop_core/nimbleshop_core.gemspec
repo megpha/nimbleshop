@@ -63,4 +63,5 @@ Gem::Specification.new do |gem|
   #  I can't use open-struct because that does not list all the keys
   gem.add_dependency 'hashr', '= 0.0.19'
 
+  gem.add_dependency 'jquery-rails', '~> 2.1.1'
 end
