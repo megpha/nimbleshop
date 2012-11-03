@@ -23,6 +23,7 @@ module Processor
       assert_equal true, transaction.success
       assert_equal NimbleshopAuthorizedotnet::Authorizedotnet.first, @order.payment_method
       assert       @order.authorized?
+      assert_equal 'visa', transaction.metadata[:cardtype]
     end
 
     test 'authorization fails when credit card number is not entered' do
