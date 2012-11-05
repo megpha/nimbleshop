@@ -3,7 +3,7 @@ Dir[File.expand_path('../dev/tasks/**/*', __FILE__)].each do |task|
 end
 
 engines = %w(nimbleshop_core)
-payment_methods = %w(nimbleshop_authorizedotnet nimbleshop_splitable nimbleshop_paypalwp)
+payment_methods = %w(nimbleshop_authorizedotnet nimbleshop_splitable nimbleshop_paypalwp nimbleshop_stripe)
 themes = %w(nimbleshop_simply)
 
 desc 'Run all tests by default'

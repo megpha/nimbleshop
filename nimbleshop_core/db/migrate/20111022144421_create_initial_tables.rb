@@ -125,9 +125,9 @@ class CreateInitialTables < ActiveRecord::Migration
 
     create_table "payment_transactions", :force => true do |t|
       t.integer  "order_id",        :null => false
-      t.string   "transaction_gid", :null => false
-      t.text     "params",          :null => false
       t.string   "operation",       :null => false
+      t.string   "transaction_gid"
+      t.text     "params"
       t.integer  "amount"
       t.text     "metadata"
       t.datetime "created_at",      :null => false

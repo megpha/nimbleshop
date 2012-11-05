@@ -59,7 +59,7 @@ module NimbleshopStripe
       {  response: response,
          order: order,
          operation: :purchased,
-         transaction_gid: token_response.id,
+         transaction_gid: response.authorization,
          metadata: {  fingerprint: token_response.card.fingerprint,
                       livemode: token_response.livemode,
                       card_number: "XXXX-XXXX-XXXX-#{token_response.card.last4}",
@@ -89,7 +89,7 @@ module NimbleshopStripe
       response = gateway.refund(order.total_amount_in_cents, transaction_gid, card_number: card_number)
 
       if response.success?
-        ::Nimbleshop::PaymentTransactionRecorder.new(response: response, operation: :refunded, order: order).record
+        ::Nimbleshop::PaymentTransactionRecorder.new(transaction_gid: response.authorization, response: response, operation: :refunded, order: order).record
         order.refund
       else
         @errors << "Refund operation failed"
