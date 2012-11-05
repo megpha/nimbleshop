@@ -56,16 +56,15 @@ running on local port +3000+ to have a public name. You can use any tool
 you want. I prefer to use "https://forwardhq.com/":https://forwardhq.com
 .
 
-Once you have the url then open config/nimbleshop.yml and replace the
-value for the key localhost2public_url .
+Once you have the url then open +config/nimbleshop.yml+ and replace the
+value for the key +localhost2public_url+ .
 
 h3. Configure nimbleShop to use seller email
 
 * Visit "Admin tab Payment methods":http://localhost:3000/admin/payment_methods .
-* Click 'Edit' next to 'Paypal websites payment standard'.
+* Click 'Paypal' vertical tab
 * Update +Merchant email+ with seller email address that you got. I am going to enter +seller_1341966113_biz@mailinator.com+ .
 * Save the record.
-
 
 h3. Instant payment notification in paypal
 

@@ -4,10 +4,13 @@ module NimbleshopAuthorizedotnet
     attr_reader :order, :payment_method, :errors, :gateway
 
     def initialize(options)
+      options.symbolize_keys!
+      options.assert_valid_keys :order, :payment_method
+
       @errors = []
-      @order = options.fetch(:order)
-      @payment_method = options.fetch(:payment_method)
-      @gateway = ::NimbleshopAuthorizedotnet::Gateway.instance(payment_method)
+      @order = options.fetch :order
+      @payment_method = options.fetch :payment_method
+      @gateway = ::NimbleshopAuthorizedotnet::Gateway.instance payment_method
     end
 
     private
@@ -27,9 +30,9 @@ module NimbleshopAuthorizedotnet
     #
     def do_authorize(options = {})
       options.symbolize_keys!
-      options.assert_valid_keys(:creditcard)
+      options.assert_valid_keys :creditcard
 
-      creditcard = options[:creditcard]
+      creditcard = options.fetch :creditcard
 
       unless valid_card?(creditcard)
         @errors.push(*creditcard.errors.full_messages)
@@ -66,9 +69,9 @@ module NimbleshopAuthorizedotnet
     #
     def do_purchase(options = {})
       options.symbolize_keys!
-      options.assert_valid_keys(:creditcard)
+      options.assert_valid_keys :creditcard
 
-      creditcard = options[:creditcard]
+      creditcard = options.fetch :creditcard
 
       unless valid_card?(creditcard)
         @errors.push(*creditcard.errors.full_messages)
@@ -105,7 +108,7 @@ module NimbleshopAuthorizedotnet
     #
     def do_kapture(options = {})
       options.symbolize_keys!
-      options.assert_valid_keys(:transaction_gid)
+      options.assert_valid_keys :transaction_gid
       transaction_gid = options.fetch :transaction_gid
       payment_transaction = PaymentTransaction.find_by_transaction_gid! transaction_gid
 
@@ -138,8 +141,8 @@ module NimbleshopAuthorizedotnet
     #
     def do_void(options = {})
       options.symbolize_keys!
-      options.assert_valid_keys(:transaction_gid)
-      transaction_gid = options[:transaction_gid]
+      options.assert_valid_keys :transaction_gid
+      transaction_gid = options.fetch :transaction_gid
 
       response = gateway.void(transaction_gid, {})
 
@@ -168,10 +171,10 @@ module NimbleshopAuthorizedotnet
     #
     def do_refund(options = {})
       options.symbolize_keys!
-      options.assert_valid_keys(:transaction_gid, :card_number)
+      options.assert_valid_keys :transaction_gid, :card_number
 
-      transaction_gid      = options[:transaction_gid]
-      card_number = options[:card_number]
+      transaction_gid      = options.fetch :transaction_gid
+      card_number = options.fetch :card_number
 
       response = gateway.refund(order.total_amount_in_cents, transaction_gid, card_number: card_number)
 

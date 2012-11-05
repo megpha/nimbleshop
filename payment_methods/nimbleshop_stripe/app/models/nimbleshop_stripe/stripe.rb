@@ -12,7 +12,7 @@ module NimbleshopStripe
     end
 
     def kapture!(order)
-      processor = NimbleshopAuthorizedotnet::Processor.new(order)
+      processor = NimbleshopAuthorizedotnet::Processor.new order
       processor.kapture
       order.kapture!
     end

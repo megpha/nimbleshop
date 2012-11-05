@@ -14,7 +14,7 @@ namespace :nimbleshop_stripe do
   task :load_record => :environment do
 
     if NimbleshopStripe::Stripe.find_by_permalink('stripe')
-      puts "Stripe record already exists"
+      Rails.logger.debug "Stripe record already exists"
     else
       NimbleshopStripe::Stripe.create!(
         {
@@ -25,7 +25,7 @@ namespace :nimbleshop_stripe do
           permalink: 'stripe',
           description: %Q[<p> Stripe is a payment gateway service provider allowing merchants to accept credit card payments. </p>]
         })
-        puts "Stripe record was successfuly created"
+        Rails.logger.debug "Stripe record was successfuly created"
     end
   end
 end

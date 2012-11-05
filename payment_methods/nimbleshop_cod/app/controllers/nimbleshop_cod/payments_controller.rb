@@ -2,7 +2,7 @@ module NimbleshopCod
   class PaymentsController < ::ActionController::Base
 
     def create
-      order       = Order.find_by_id(session[:order_id])
+      order       = Order.find_by_id! session[:order_id]
       order.update_attributes(payment_method: NimbleshopCod::Cod.first)
       order.pending
 

@@ -9,7 +9,7 @@ common:
 
   # this is used for IPN notification and other places where external serivce cannot ping localhost
   use_localhost2public_url: true
-  localhost2public_url: https://neeraj.showoff.io
+  localhost2public_url: https://neeraj.fwd.wf
 
   authorizedotnet:
     api_login_id:    <%= ENV['AUTHORIZE_NET_LOGIN_ID'] || '26Daqx7Jtw7R' %>

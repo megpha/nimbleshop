@@ -7,7 +7,7 @@ module NimbleshopStripe
       @errors = []
       @order = options.fetch :order
       @payment_method = options.fetch :payment_method
-      @gateway = ::NimbleshopStripe::Gateway.instance(payment_method)
+      @gateway = ::NimbleshopStripe::Gateway.instance payment_method
       ::Stripe.api_key = payment_method.secret_key
     end
 
@@ -54,7 +54,7 @@ module NimbleshopStripe
     end
 
     def payment_transaction_recorder_hash(response, token)
-      token_response = ::Stripe::Token.retrieve(token)
+      token_response = ::Stripe::Token.retrieve token
 
       {  response: response,
          order: order,
@@ -81,10 +81,10 @@ module NimbleshopStripe
     #
     def do_refund(options = {})
       options.symbolize_keys!
-      options.assert_valid_keys(:transaction_gid, :card_number)
+      options.assert_valid_keys :transaction_gid, :card_number
 
-      transaction_gid      = options[:transaction_gid]
-      card_number = options[:card_number]
+      transaction_gid      = options.fetch :transaction_gid
+      card_number = options.fetch :card_number
 
       response = gateway.refund(order.total_amount_in_cents, transaction_gid, card_number: card_number)
 
