@@ -23,7 +23,6 @@ module Nimbleshop
 
       h = { operation: @operation.to_s,
             params: @response.params,
-            success: @response.success? ,
             amount: @order.total_amount_in_cents,
             metadata: @metadata,
             transaction_gid: @transaction_gid }

@@ -88,7 +88,6 @@ module NimbleshopSplitable
 
     def record_transaction(params, operation)
       order.payment_transactions.create(operation: operation,
-                                        success: true,
                                         transaction_gid: params[:transaction_id],
                                         params: params)
     end

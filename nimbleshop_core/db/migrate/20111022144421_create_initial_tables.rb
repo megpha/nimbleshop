@@ -127,7 +127,6 @@ class CreateInitialTables < ActiveRecord::Migration
       t.integer  "order_id",        :null => false
       t.string   "transaction_gid", :null => false
       t.text     "params",          :null => false
-      t.boolean  "success",         :null => false
       t.string   "operation",       :null => false
       t.integer  "amount"
       t.text     "metadata"

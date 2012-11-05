@@ -38,14 +38,13 @@ module NimbleshopAuthorizedotnet
 
       response = gateway.authorize(order.total_amount_in_cents, creditcard, ::Nimbleshop::PaymentUtil.activemerchant_options(order))
 
-      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
-                                                              response: response,
-                                                              operation: :authorized,
-                                                              transaction_gid: get_transaction_gid(response),
-                                                              metadata: { card_number: creditcard.display_number, cardtype: creditcard.cardtype})
-      recorder.record
-
       if response.success?
+        recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                                response: response,
+                                                                operation: :authorized,
+                                                                transaction_gid: get_transaction_gid(response),
+                                                                metadata: { card_number: creditcard.display_number, cardtype: creditcard.cardtype})
+        recorder.record
         order.update_attributes(payment_method: payment_method)
         order.authorize
       else
@@ -77,14 +76,15 @@ module NimbleshopAuthorizedotnet
       end
 
       response = gateway.purchase(order.total_amount_in_cents, creditcard)
-      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
-                                                              response: response,
-                                                              operation: :purchased,
-                                                              transaction_gid: get_transaction_gid(response),
-                                                              metadata: { card_number: creditcard.display_number, cardtype: creditcard.cardtype})
-      recorder.record
 
       if response.success?
+        recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                                response: response,
+                                                                operation: :purchased,
+                                                                transaction_gid: get_transaction_gid(response),
+                                                                metadata: { card_number: creditcard.display_number, cardtype: creditcard.cardtype})
+        recorder.record
+
         order.update_attributes(payment_method: payment_method)
         order.purchase
       else
@@ -111,15 +111,18 @@ module NimbleshopAuthorizedotnet
 
       response = gateway.capture(order.total_amount_in_cents, transaction_gid, {})
 
-      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
-                                                              response: response,
-                                                              operation: :captured,
-                                                              transaction_gid: get_transaction_gid(response),
-                                                              metadata: { card_number: payment_transaction.metadata[:card_number],
-                                                                          cardtype: payment_transaction.metadata[:cardtype]})
-      recorder.record
-
-      response.success? ? order.kapture : ( @errors << "Capture operation failed" )
+      if response.success?
+        recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                                response: response,
+                                                                operation: :captured,
+                                                                transaction_gid: get_transaction_gid(response),
+                                                                metadata: { card_number: payment_transaction.metadata[:card_number],
+                                                                            cardtype: payment_transaction.metadata[:cardtype]})
+        recorder.record
+        order.kapture
+      else
+        @errors << "Capture operation failed"
+      end
 
       response.success?
     end
@@ -140,11 +143,16 @@ module NimbleshopAuthorizedotnet
 
       response = gateway.void(transaction_gid, {})
 
-      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order, response: response, operation: :voided,
-                                                                                                          transaction_gid: get_transaction_gid(response))
-      recorder.record
-
-      response.success? ?  order.void : (@errors << "Void operation failed")
+      if response.success?
+        recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                                response: response,
+                                                                operation: :voided,
+                                                                transaction_gid: get_transaction_gid(response))
+        recorder.record
+        order.void
+      else
+        @errors << "Void operation failed"
+      end
 
       response.success?
     end
@@ -167,11 +175,16 @@ module NimbleshopAuthorizedotnet
 
       response = gateway.refund(order.total_amount_in_cents, transaction_gid, card_number: card_number)
 
-      recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order, response: response, operation: :refunded,
-                                                                                                          transaction_gid: get_transaction_gid(response))
-      recorder.record
-
-      response.success? ? order.refund : (@errors << "Refund failed")
+      if response.success?
+        recorder = ::Nimbleshop::PaymentTransactionRecorder.new(order: order,
+                                                                response: response,
+                                                                operation: :refunded,
+                                                                transaction_gid: get_transaction_gid(response))
+        recorder.record
+        order.refund
+      else
+        @errors << "Refund failed"
+      end
 
       response.success?
     end

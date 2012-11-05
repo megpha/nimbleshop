@@ -87,9 +87,13 @@ module NimbleshopStripe
       card_number = options[:card_number]
 
       response = gateway.refund(order.total_amount_in_cents, transaction_gid, card_number: card_number)
-      ::Nimbleshop::PaymentTransactionRecorder.new(response: response, operation: :refunded, order: order).record
 
-      response.success? ? order.refund : ( @errors << "Refund operation failed" )
+      if response.success?
+        ::Nimbleshop::PaymentTransactionRecorder.new(response: response, operation: :refunded, order: order).record
+        order.refund
+      else
+        @errors << "Refund operation failed"
+      end
 
       response.success?
     end
