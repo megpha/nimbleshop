@@ -6,6 +6,5 @@ dev/myshop
 tmp
 doc/output
 Gemfile.lock
-vendor
 nimbleshop_core/test/myshop/public/uploads
 nimbleshop_core/test/myshop

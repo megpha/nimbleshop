@@ -20,3 +20,5 @@
 //= require nimbleshop_simply/load_states
 //= require nimbleshop_simply/order
 //= require nimbleshop_simply/enable_fancybox
+//= require nimbleshop_simply/creditcard
+//= require nimbleshop_simply/vendor/jquery.creditCardValidator

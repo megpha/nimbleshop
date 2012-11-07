@@ -3,3 +3,5 @@ $ ->
     openEffect: "none"
     closeEffect: "none"
     cyclic: true
+
+
