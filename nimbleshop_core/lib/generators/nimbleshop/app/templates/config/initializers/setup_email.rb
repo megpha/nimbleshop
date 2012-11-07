@@ -1,4 +1,6 @@
-if Nimbleshop.config.deliver_email
+if Rails.env.test?
+
+elsif Nimbleshop.config.deliver_email
 
   # Setup how you want email to be delivered
 

@@ -41,7 +41,7 @@ test:
 staging:
   use_s3: true
   bare_url_with_port: nimbleshop.net
-  deliver_email: <%= ENV['DELIVER_EMAIL'] %>
+  deliver_email: <%= ENV['DELIVER_EMAIL'] || false %>
   cache_images: true
 
 production:
