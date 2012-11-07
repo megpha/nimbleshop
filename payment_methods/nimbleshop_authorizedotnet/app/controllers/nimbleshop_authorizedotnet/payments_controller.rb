@@ -6,7 +6,7 @@ module NimbleshopAuthorizedotnet
       order             =  Order.find_by_id! session[:order_id]
 
       address_attrs     = order.final_billing_address.to_credit_card_attributes
-      creditcard_attrs  = params[:creditcard].merge address_attrs
+      creditcard_attrs  = creditcard_params.merge address_attrs
       creditcard        = Creditcard.new creditcard_attrs
 
       payment_method    = NimbleshopAuthorizedotnet::Authorizedotnet.first
@@ -31,6 +31,10 @@ module NimbleshopAuthorizedotnet
 
     end
 
-  end
+    private
 
+    def creditcard_params
+      params.require(:creditcard).permit(:number, :"expires_on(3i)", :"expires_on(2i)", :"expires_on(1i)", :cvv)
+    end
+  end
 end
