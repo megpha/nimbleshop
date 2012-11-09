@@ -56,13 +56,24 @@ module NimbleshopPaypalwp
     end
 
     def ipn_from_paypal?
-      result = amount_match? && notify.complete? && business_email_match? && notify_acknowledge
+      # this is needed because the intergration mode was being reset in development
+      ActiveMerchant::Billing::Base.integration_mode = payment_method.mode.intern
+
+      result = amount_match? && notify_complete && business_email_match? && notify_acknowledge
       Rails.logger.debug "ipn_from_paypal? : #{result}"
       result
     end
 
+    def notify_complete
+      result = notify.complete?
+      Rails.logger.debug "notify.complete? : #{result}"
+      result
+    end
+
     def notify_acknowledge
-      Rails.env.test? ? true : notify.acknowledge
+      result = Rails.env.test? ? true : notify.acknowledge
+      Rails.logger.debug "notify_acknowledge : #{result}"
+      result
     end
 
     def business_email_match?

@@ -5,8 +5,8 @@ class Creditcard
   extend  ActiveModel::Callbacks
   include ActiveModel::Validations::Callbacks
 
-  attr_accessor :cvv, :expires_on, :number, :first_name, :last_name, :address1, :address2,
-                :cardtype, :month, :year, :state, :zipcode
+  attr_accessor :first_name, :last_name, :address1, :address2, :state, :zipcode
+  attr_accessor :cvv, :expires_on, :number, :cardtype, :month, :year
 
   alias :verification_value :cvv # ActiveMerchant needs this
 
