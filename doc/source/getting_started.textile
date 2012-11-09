@@ -2,6 +2,8 @@ h2. Build an online shop using nimbleShop
 
 endprologue.
 
+Please follow this documentation if you are using <em>nimbleShop</em> . If you are developing <em>nimbleshop</em> then follow "setting up development environment":http://nimbleshop.org/setting_up_development_environment.html .
+
 h3. nimbleShop only supports ruby 1.9.2+
 
 In order to get started with nimbleShop you need to have
