@@ -1,4 +1,34 @@
 module Nimbleshop
+  mattr_accessor :root_route
+
+  @@theme_class = nil
+
+  def self.theme_class=(klass)
+    if klass.const_defined?('Engine')
+      engine_klass = klass.const_get('Engine') 
+    else
+      raise "could not find Engine class"
+    end
+
+    unless engine_klass || engine_klass.is_a?(::Rails::Engine)
+      raise 'only engines can be theme classes'
+    end
+
+    @@theme_class = klass
+  end
+
+  def self.theme_class
+    @@theme_class || NimbleshopSimply
+  end
+
+  def self.theme_engine
+    theme_class.const_get('Engine')
+  end
+
+  def self.root_route_segment
+    @@root_route || "#{theme_class.to_s.underscore}/products#index"
+  end
+
   class Engine < ::Rails::Engine
 
     engine_name 'nimbleshop_core'
@@ -20,6 +50,5 @@ module Nimbleshop
         helper PaymentMethodHelper
       end
     end
-
   end
 end
