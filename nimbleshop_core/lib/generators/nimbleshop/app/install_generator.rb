@@ -53,6 +53,7 @@ module Nimbleshop
       template "config/initializers/carrierwave.rb",  "#{destination_path}/config/initializers/carrierwave.rb"
       template "config/initializers/delayed_job.rb",  "#{destination_path}/config/initializers/delayed_job.rb"
       template "config/initializers/setup_email.rb",  "#{destination_path}/config/initializers/setup_email.rb"
+      template "config/initializers/nimbleshop.rb",  "#{destination_path}/config/initializers/nimbleshop.rb"
     end
 
     # Helper method to quickly convert destination_root to a Pathname for easy file path manipulation
