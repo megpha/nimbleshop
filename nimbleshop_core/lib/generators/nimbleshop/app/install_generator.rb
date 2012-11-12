@@ -12,7 +12,6 @@ module Nimbleshop
       copy_files!
       migrate_database!
       ensure_no_mass_protection
-      mount
       delete_public_index_html
       delete_test_dir
     end
@@ -26,22 +25,6 @@ module Nimbleshop
     def delete_public_index_html
       index_file = destination_path.join('public', 'index.html')
       FileUtils.rm(index_file) if File.exists? index_file
-    end
-
-    def mount
-      if (routes_file = destination_path.join('config', 'routes.rb')).file?
-        mount = %Q{
-          mount NimbleshopSimply::Engine,          :at => '/'
-
-          mount NimbleshopAuthorizedotnet::Engine, :at => '/nimbleshop_authorizedotnet'
-          mount NimbleshopPaypalwp::Engine,        :at => '/nimbleshop_paypalwp'
-          mount NimbleshopSplitable::Engine,       :at => '/nimbleshop_splitable'
-          mount NimbleshopCod::Engine,             :at => '/nimbleshop_cod'
-          mount NimbleshopStripe::Engine,          :at => '/nimbleshop_stripe'
-        }
-
-        inject_into_file 'config/routes.rb', mount, :after => "Application.routes.draw do\n"
-      end
     end
 
     def ensure_no_mass_protection
