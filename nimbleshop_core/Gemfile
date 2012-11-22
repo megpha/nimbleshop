@@ -1,6 +1,7 @@
 eval(File.read(Pathname.new(File.dirname(__FILE__)).join('..', 'dev', 'common_gemfile.rb').to_s))
 
 gemspec
+gem 'guard-minitest'
 
 gem 'nimbleshop_simply',           path: '../themes/nimbleshop_simply'
 

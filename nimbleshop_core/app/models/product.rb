@@ -23,7 +23,15 @@ class Product < ActiveRecord::Base
 
   validates_presence_of :name, :description, :price
 
+  attr_accessor :variant_types, :variant_rows
+
   validates_numericality_of :price
+
+  def variants
+    VariantBuilder.
+      new(labels: variant_types, values: variant_rows).
+      variants
+  end
 
   def picture
     pictures.first
