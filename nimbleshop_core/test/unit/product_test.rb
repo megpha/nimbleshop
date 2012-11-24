@@ -59,14 +59,41 @@ class ProductFindOrBuildForField < ActiveSupport::TestCase
 end
 
 
-class ProductVariantIntegrationTest < ActiveRecord::TestCase
+class ProductVariantNewIntegrationTest < ActiveRecord::TestCase
   setup do
-    product = Product.new(variant_labels: %w[color size], variant_rows: %w[red small 4 5.56])
+    product = Product.new(variant_labels: %w[color size], variant_rows: [%w[red small 4 5.56]])
     product.valid?
+
     @variants = product.variants
   end
 
-  test "build new variants before validation" do
-    assert_equal 1, @variants.count
+  test "created variants" do
+    assert_equal 1, @variants.length
+  end
+
+  test "attributes" do
+    variant = @variants.first
+    assert_equal 5.56, variant.price
+    assert_equal 4, variant.quantity
+  end
+end
+
+class ProductVariantUpdatedIntegrationTest < ActiveRecord::TestCase
+  setup do
+    product = Product.new(variant_labels: %w[color size], variant_rows: [%w[red small 4 5.56]])
+    product.valid?
+    product.variant_rows = [%w[yellow medium 3 3.3], %w[black xxl 4 12.34]]
+    product.valid?
+    @variants = product.variants.reject(&:marked_for_destruction?)
+  end
+
+  test "created variants" do
+    assert_equal 2, @variants.length
+  end
+
+  test "attributes" do
+    variant = @variants.first
+    assert_equal 3.3, variant.price
+    assert_equal 3, variant.quantity
   end
 end

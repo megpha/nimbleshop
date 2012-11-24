@@ -34,7 +34,7 @@ class Product < ActiveRecord::Base
   end
 
   def build_variants
-    VariationBuilder.new(variant_labels, variant_rows).build
+    VariantBuilder.new(self).rebuild
   end
 
   before_validation :build_variants, if: :variants_assigned?
