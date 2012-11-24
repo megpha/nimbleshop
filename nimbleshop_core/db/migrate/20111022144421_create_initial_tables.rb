@@ -181,9 +181,19 @@ class CreateInitialTables < ActiveRecord::Migration
       t.string   "name",                                                            :null => false
       t.string   "status",                                    :default => "active", :null => false
       t.text     "description"
+      t.text     "variant_labels"
       t.decimal  "price",       :precision => 8, :scale => 2,                       :null => false
       t.boolean  "new",                                       :default => false,    :null => false
       t.string   "permalink",                                                       :null => false
+      t.datetime "created_at",                                                      :null => false
+      t.datetime "updated_at",                                                      :null => false
+    end
+
+    create_table "variants", :force => true do |t|
+      t.integer  "product_id",                                                      :null => false
+      t.string   "price",                                                           :null => false
+      t.string   "quantity",                                                        :null => false
+      t.text     "values"
       t.datetime "created_at",                                                      :null => false
       t.datetime "updated_at",                                                      :null => false
     end

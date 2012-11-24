@@ -1,10 +1,25 @@
 require 'test_helper'
 
 class VariantBuilderTest < ActiveRecord::TestCase
-  test "should able to build" do
-    builder = VariantBuilder.new(labels: %w[color size], values: [%w[green 2 4 12.89], %w[red 12 14 1.99]])
-    expected = [ OpenStruct.new(size: '2', color: 'green', quantity: 4, price: 12.89), OpenStruct.new(size: '12', color: 'red', quantity: 14, price: 1.99) ]
+  setup do
+    @product = Product.new(variant_labels: %w[color size], 
+                           variant_rows: [%w[green 2 4 12.89], %w[red 12 14 1.99]])
+    @builder = VariantBuilder.new(@product)
+    @builder.rebuild
+  end
 
-    assert_equal expected, builder.variants
+  test "constructs two variants" do
+    assert_equal 2, @product.variants.length
+  end
+
+  test 'construct with given options' do
+    green = @product.variants[0]
+    expected = { color: 'green', 
+                 size: 2 ,
+                 quantity: 4,
+                 price: 12.89 }
+
+    assert_equal expected, green.to_hash
+    red = @product.variants[0]
   end
 end

@@ -56,5 +56,17 @@ class ProductFindOrBuildForField < ActiveSupport::TestCase
   test 'needs to return exisitng answer' do
     assert_equal @answer, @product.find_or_build_answer_for_field(@field1)
   end
+end
 
+
+class ProductVariantIntegrationTest < ActiveRecord::TestCase
+  setup do
+    product = Product.new(variant_labels: %w[color size], variant_rows: %w[red small 4 5.56])
+    product.valid?
+    @variants = product.variants
+  end
+
+  test "build new variants before validation" do
+    assert_equal 1, @variants.count
+  end
 end

@@ -35,6 +35,7 @@ module Nimbleshop
 
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/lib/nimbleshop)
+    config.autoload_paths += %W(#{config.root}/app/presenters)
 
     initializer 'nimbleshop_core.config_to_prepare' do |app|
       app.config.to_prepare do

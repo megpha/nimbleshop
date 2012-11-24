@@ -1,0 +1,39 @@
+<% presenter = VariantPresenter.new(product.variant_labels, product.variants.map(&:to_hash)) %>
+
+<div class="sublvl" data-behavior="product-variants-box" style="display: block;">
+  <a href="#" class="admin_listings_add_variant_label_column_link button white" data-behavior="product-variants-add-column" id="admin_listings_add_variant_label_column_link">+ Add Column</a>
+  <table class="variant reset alist" data-behavior="product-variants-table">
+    <thead>
+      <tr class="silver">
+        <th class="custom">
+          <a href="#" class="btn-set delete admin_listings_del_variant_column_link" data-behavior="product-variants-delete-column" title="Delete"></a>
+        </th>
+        <th class="custom">
+          <a href="#" class="btn-set delete admin_listings_del_variant_column_link" data-behavior="product-variants-delete-column" title="Delete"></a>
+        </th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr class="columns" data-behavior="product-variants-label-row">
+        <%= raw presenter.render_labels(self) %>
+        <th class="dis">Price Change</th>
+        <th class="dis">Qty. In Stock</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody class="ui-sortable">
+      <%= raw presenter.render_variants(self) %>
+    </tbody>
+    <tfoot>
+      <tr class="add admin_listings_add_variant_row_link">
+        <td colspan="100%" class="odd">
+          <a href="#" class="silver" data-behavior="product-variants-add-row">
+            <img alt="+" src="/assets/icn/icn_plus-10f0f22a6195e3f4459fe050081325c7.png">
+            Add Row
+          </a>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

@@ -25,4 +25,3 @@ require 'strong_parameters'
 require 'valid_email'
 require 'custom_error_message'
 require 'american_date'
-

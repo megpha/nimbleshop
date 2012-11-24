@@ -1,6 +1,7 @@
 class Product < ActiveRecord::Base
-
   include Permalink::Builder
+
+  serialize :variant_labels, Array
 
   alias_attribute :title, :name
 
@@ -12,6 +13,7 @@ class Product < ActiveRecord::Base
 
   accepts_nested_attributes_for :pictures, allow_destroy: true, reject_if: proc { |r| r[:picture].blank? }
 
+  has_many :variants
   has_many                      :custom_field_answers, dependent: :destroy
   accepts_nested_attributes_for :custom_field_answers, allow_destroy: true
 
@@ -23,14 +25,24 @@ class Product < ActiveRecord::Base
 
   validates_presence_of :name, :description, :price
 
-  attr_accessor :variant_types, :variant_rows
+  attr_writer :variant_rows
 
   validates_numericality_of :price
 
-  def variants
-    VariantBuilder.
-      new(labels: variant_types, values: variant_rows).
-      variants
+  def variants_assigned?
+    defined?(@variant_rows)
+  end
+
+  def build_variants
+    VariationBuilder.new(variant_labels, variant_rows).build
+  end
+
+  before_validation :build_variants, if: :variants_assigned?
+
+  def variant_rows
+    @variant_rows ||=  begin 
+                         variations.map(&:to_hash)
+                       end
   end
 
   def picture
