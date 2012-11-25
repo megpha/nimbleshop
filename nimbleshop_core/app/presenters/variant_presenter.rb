@@ -3,8 +3,8 @@ class VariantPresenter
   attr_reader :labels, :rows
 
   def initialize(labels, rows)
+    @labels = labels.empty? ? ['',''] : labels
     @rows   = rows.empty? ? [{}, {}] : rows
-    @labels = labels ? ['',''] : labels
   end
 
   def render_labels(renderer)

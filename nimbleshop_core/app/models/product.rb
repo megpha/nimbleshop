@@ -25,8 +25,6 @@ class Product < ActiveRecord::Base
 
   validates_presence_of :name, :description, :price
 
-  attr_writer :variant_rows
-
   validates_numericality_of :price
 
   def variants_assigned?
@@ -43,6 +41,10 @@ class Product < ActiveRecord::Base
     @variant_rows ||=  begin 
                          variations.map(&:to_hash)
                        end
+  end
+
+  def variant_rows=(hsh)
+    @variant_rows = hsh.values  
   end
 
   def picture

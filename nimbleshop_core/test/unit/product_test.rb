@@ -61,9 +61,8 @@ end
 
 class ProductVariantNewIntegrationTest < ActiveRecord::TestCase
   setup do
-    product = Product.new(variant_labels: %w[color size], variant_rows: [%w[red small 4 5.56]])
+    product = Product.new(variant_labels: %w[color size], variant_rows: { 0 => %w[red small 4 5.56] })
     product.valid?
-
     @variants = product.variants
   end
 
@@ -80,9 +79,9 @@ end
 
 class ProductVariantUpdatedIntegrationTest < ActiveRecord::TestCase
   setup do
-    product = Product.new(variant_labels: %w[color size], variant_rows: [%w[red small 4 5.56]])
+    product = Product.new(variant_labels: %w[color size], variant_rows: { 0 => %w[red small 4 5.56] })
     product.valid?
-    product.variant_rows = [%w[yellow medium 3 3.3], %w[black xxl 4 12.34]]
+    product.variant_rows = { 0 => %w[yellow medium 3 3.3], 1 => %w[black xxl 4 12.34] }
     product.valid?
     @variants = product.variants.reject(&:marked_for_destruction?)
   end
