@@ -27,6 +27,28 @@ Nimbleshop.managePicture = class ManagePicture
       $("#product_pictures_order").attr "value", $.toJSON(order)
     ).disableSelection()
 
+Nimbleshop.manageVariants = class ManageVariants
+  constructor: ->
+    @initActions()
+  addVariantRow: ->
+    newid   = new Date().getTime() 
+    matcher = /(\[|_)\d+(\]|_)/g
+    content = ($ ".variant tbody tr:first").clone()
+    content.find('input').removeAttr('value')
+    $('<tr/>').append content.html().replace(matcher, "$1#{newid}$2")
+  addRow: =>
+    ($ ".variant tbody").append @addVariantRow
+    false
+  addColumn: =>
+    for element in ($ ".variant tr:not(.silver)")
+      $element = ($ element)
+      html = $element.find('td:first,th:first').clone().find('input').removeAttr('value')
+      $($element.find('td,th').get(0)).before(html)
+    false
+  initActions: ->
+    ($ "a[data-behaviour='product-variants-add-row']").click 'addrow', @addRow 
+    ($ "a[data-behaviour='product-variants-add-column']").click 'addrow', @addColumn
 
 $ ->
   new Nimbleshop.managePicture
+  new Nimbleshop.manageVariants

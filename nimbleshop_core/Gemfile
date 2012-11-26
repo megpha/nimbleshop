@@ -2,6 +2,7 @@ eval(File.read(Pathname.new(File.dirname(__FILE__)).join('..', 'dev', 'common_ge
 
 gemspec
 gem 'guard-minitest'
+gem 'guard-coffeescript'
 
 gem 'nimbleshop_simply',           path: '../themes/nimbleshop_simply'
 

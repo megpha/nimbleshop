@@ -13,7 +13,7 @@ class Product < ActiveRecord::Base
 
   accepts_nested_attributes_for :pictures, allow_destroy: true, reject_if: proc { |r| r[:picture].blank? }
 
-  has_many :variants
+  has_many :variants, dependent: :destroy, autosave: true
   has_many                      :custom_field_answers, dependent: :destroy
   accepts_nested_attributes_for :custom_field_answers, allow_destroy: true
 
