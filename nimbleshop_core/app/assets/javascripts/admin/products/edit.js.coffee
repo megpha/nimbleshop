@@ -36,18 +36,36 @@ Nimbleshop.manageVariants = class ManageVariants
     content = ($ ".variant tbody tr:first").clone()
     content.find('input').removeAttr('value')
     $('<tr/>').append content.html().replace(matcher, "$1#{newid}$2")
+
   addRow: =>
     ($ ".variant tbody").append @addVariantRow
     false
+
   addColumn: =>
-    for element in ($ ".variant tr:not(.silver)")
+    for element in ($ ".variant tr")
       $element = ($ element)
-      html = $element.find('td:first,th:first').clone().find('input').removeAttr('value')
+      html = $element.find('td:first,th:first').clone()
+      html.find('input').removeAttr('value')
       $($element.find('td,th').get(0)).before(html)
     false
+
+  removeColumn: (event) =>
+    $element = ($ event.target)
+    index = $element.parents("tr").find('a').index($element)
+
+    for row in ($ ".variant tr")
+      $($(row).find('td,th').get(index)).remove()
+    false
+
+  removeRow: (event) =>
+    ($ event.target).parents("tr").remove()
+    false
+
   initActions: ->
-    ($ "a[data-behaviour='product-variants-add-row']").click 'addrow', @addRow 
-    ($ "a[data-behaviour='product-variants-add-column']").click 'addrow', @addColumn
+    ($ "a[data-behaviour='product-variants-add-row']").click  @addRow 
+    ($ "a[data-behaviour='product-variants-add-column']").click  @addColumn
+    ($ "a[data-behaviour='product-variants-delete-column']").live 'click', @removeColumn
+    ($ "a[data-behaviour='product-variants-delete-row']").live 'click', @removeRow
 
 $ ->
   new Nimbleshop.managePicture

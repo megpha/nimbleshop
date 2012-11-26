@@ -5,12 +5,11 @@
   <table class="variant reset alist" data-behavior="product-variants-table">
     <thead>
       <tr class="silver">
-        <th class="custom">
-          <a href="#" class="btn-set delete admin_listings_del_variant_column_link" data-behavior="product-variants-delete-column" title="Delete"></a>
-        </th>
-        <th class="custom">
-          <a href="#" class="btn-set delete admin_listings_del_variant_column_link" data-behavior="product-variants-delete-column" title="Delete"></a>
-        </th>
+        <% presenter.labels.each do | _ | %>
+          <th class="custom">
+            <%= link_to "Delete", '#', title: 'Delete', data: { behaviour: "product-variants-delete-column" } %>
+          </th>
+        <% end %>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>

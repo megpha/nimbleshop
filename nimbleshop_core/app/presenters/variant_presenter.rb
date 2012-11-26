@@ -17,15 +17,21 @@ class VariantPresenter
     index = -1
     rows.map do | row |
       index += 1
+
       inner = labels_with_required_fields.map do | field |
-        text_html = renderer.text_field_tag("product[variant_rows][#{index}][]", row[field.to_sym])
-        renderer.content_tag(:td, renderer.raw(text_html))
-      end.join(' ')
-      renderer.content_tag(:tr, renderer.raw(inner))
+        intd(renderer, renderer.text_field_tag("product[variant_rows][#{index}][]", row[field.to_sym]))
+      end
+
+      inner << intd(renderer, renderer.link_to("Delete", '#', title: 'Delete', data: { behaviour: "product-variants-delete-row"}))
+      renderer.content_tag(:tr, renderer.raw(inner.join(' ')))
     end.join(' ')
   end
 
   private
+
+    def intd(renderer, html)
+      renderer.content_tag(:td, renderer.raw(html))
+    end
 
     def labels_with_required_fields
       labels + %w[price quantity]
