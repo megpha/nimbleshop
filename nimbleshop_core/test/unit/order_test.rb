@@ -4,7 +4,7 @@ class OrderAddressTest < ActiveSupport::TestCase
 
   test "shipping and billing address is nil" do
     order = Order.new(billing_address: nil, shipping_address: nil)
-    assert_equal nil, order.final_billing_address
+    assert_nil  order.final_billing_address
   end
 
   test "billing address is same as shipping address" do

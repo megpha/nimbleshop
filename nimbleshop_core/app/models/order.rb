@@ -21,7 +21,7 @@ class Order < ActiveRecord::Base
   has_many    :payment_transactions, dependent:  :destroy
 
   accepts_nested_attributes_for :shipping_address, allow_destroy: true
-  accepts_nested_attributes_for :billing_address,  reject_if: :billing_address_same_as_shipping?  , allow_destroy: true
+  accepts_nested_attributes_for :billing_address,  reject_if: :billing_address_same_as_shipping, allow_destroy: true
 
   delegate :tax,            to: :tax_calculator
   delegate :shipping_cost,  to: :shipping_cost_calculator
@@ -79,10 +79,7 @@ class Order < ActiveRecord::Base
   end
 
   def add(product)
-    options = { product_id: product.id }
-    if line_items.where(options).empty?
-      line_items.create(options.merge(quantity: 1))
-    end
+    line_item_for(product.id) || line_items.create(product_id: product.id, quantity: 1)
   end
 
   def update_quantity(data = {})
@@ -94,7 +91,7 @@ class Order < ActiveRecord::Base
   end
 
   def remove(product)
-    update_quantity({product.id => 0})
+    update_quantity(product.id => 0)
   end
 
   # Returns the total price of all line items in float.
@@ -121,19 +118,8 @@ class Order < ActiveRecord::Base
     billing_address || build_billing_address(country_code: "US", use_for_billing: false)
   end
 
-  def billing_address_same_as_shipping?
-    billing_address_same_as_shipping
-  end
-
-  # If billing_address is same as shipping_address then order.billing_address returns nil .
-  # order.real_billing_address will always returns a valid address
-  def real_billing_address
-    (shipping_address && !shipping_address.use_for_billing) ? billing_address : shipping_address
-  end
-  alias_method :final_billing_address, :real_billing_address
-
-  def line_item_for(product_id)
-    line_items.find_by_product_id(product_id)
+  def final_billing_address
+    current_shipping_address.use_for_billing? ? shipping_address : billing_address
   end
 
   def shippable_countries
@@ -141,6 +127,14 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+  def current_shipping_address
+    shipping_address || NullShippingAddress.new
+  end
+
+  def line_item_for(product_id)
+    line_items.find_by_product_id(product_id)
+  end
 
   def set_order_number
     num = Random.new.rand(11111111...99999999).to_s
@@ -160,8 +154,19 @@ class Order < ActiveRecord::Base
   end
 
   def after_shipped
-    Nimbleshop.config.mailer.constantize.delay.shipment_notification_to_buyer(number)
+    Nimbleshop.
+      config.
+      mailer.
+      constantize.
+      delay.
+      shipment_notification_to_buyer(number)
+
     touch(:shipped_at)
   end
 
+  class NullShippingAddress
+    def use_for_billing?
+      false
+    end
+  end
 end
