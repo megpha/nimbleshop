@@ -8,7 +8,7 @@ class VariantTest < ActiveRecord::TestCase
   end
 
   test 'to_hash' do
-    expected = {color: 'red', size: 'medium', quantity: 2, price: 12.3}
+    expected = {color: 'red', id: nil, size: 'medium', quantity: 2, price: 12.3}
     assert_equal expected, @variant.to_hash
   end
 end

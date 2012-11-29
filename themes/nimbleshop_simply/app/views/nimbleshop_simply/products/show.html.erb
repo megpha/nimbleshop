@@ -34,20 +34,28 @@
   </div>
 
   <div class='span6'>
-    <h2 id='product-price'><%= number_to_currency(@product.price) %></h2>
+    <h2 id='product-price' data-price="<%= @product.price %>">
+      <%= number_to_currency(@product.price) %>
+    </h2>
 
     <% @product.variants.each do | variant, index | %>
       <%= tag("div", class: 'variants-info', data: variant.to_hash) %>
     <% end %>
 
+    <% @product.variant_labels.each_with_index do | label, index | %>
+      <%= select_tag "variant-#{index}", options_for_variant(@product, label), class: 'variant-selectors', data: { name: label }%>
+    <% end %>
+
     <%= form_tag('/cart/add', method: 'post') do %>
       <%= hidden_field_tag :permalink, @product.permalink %>
+      <%= hidden_field_tag :variant, @product.variants.first %>
       <div id="buy" class="clear">
         <span class="cart_button">
           <%= submit_tag 'Add to cart', class: '', id: 'add-to-cart', 'data-loading-text' => 'adding..' %>
         </span>
       </div>
     <% end %>
+
     <h4 id='product-description'>Description</h4>
     <div id='product-description-content'>
       <%= simple_format(@product.description) %>
