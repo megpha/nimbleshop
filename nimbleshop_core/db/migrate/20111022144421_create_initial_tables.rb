@@ -59,10 +59,9 @@ class CreateInitialTables < ActiveRecord::Migration
     create_table "line_items", :force => true do |t|
       t.integer  "order_id",                                          :null => false
       t.integer  "product_id",                                        :null => false
+      t.integer  "variant_id",                                        :null => true 
       t.integer  "quantity",                                          :null => false
-      t.string   "product_name",                                      :null => false
-      t.text     "product_description"
-      t.decimal  "product_price",       :precision => 8, :scale => 2, :null => false
+      t.decimal  "price",               :precision => 8, :scale => 2, :null => false
       t.text     "metadata"
       t.datetime "created_at",                                        :null => false
       t.datetime "updated_at",                                        :null => false

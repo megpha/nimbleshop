@@ -18,9 +18,9 @@ Items purchased:
 
 <% @order.line_items.each do |line_item| %>
 Name: <%= truncate(sanitize(line_item.product_name), length: 90) %>
-Item price: <%= number_to_currency(line_item.product_price) %>
+Item price: <%= number_to_currency(line_item.price) %>
 Item quantity: <%= line_item.quantity %>
-Item total price: <%= number_to_currency(line_item.price) %>
+Item total price: <%= number_to_currency(line_item.total) %>
 <%# the below empty line is intentional %>
 
 <% end %>

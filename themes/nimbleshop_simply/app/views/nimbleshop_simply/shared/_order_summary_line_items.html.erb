@@ -5,8 +5,8 @@
         <div class='lhs'>
           <%= truncate(line_item.product_name, length: 75) %>
           <p>
-            <%= line_item.quantity %> x <%= number_to_currency(line_item.product_price) %> =
-            <strong> <%= number_to_currency(line_item.price) %> </strong>
+            <%= line_item.quantity %> x <%= number_to_currency(line_item.price) %> =
+            <strong> <%= number_to_currency(line_item.total) %> </strong>
           </p>
         </div>
         <div class='rhs'>

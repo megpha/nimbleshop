@@ -15,7 +15,7 @@
 
     <div class="span2">
       <h4 class="visible-phone"> Item Price </h4>
-      <%= number_to_currency(line_item.product_price) %>
+      <%= number_to_currency(line_item.price) %>
     </div>
 
     <div class="span2">
@@ -26,7 +26,7 @@
     </div>
     <div class="span2">
       <h4 class="visible-phone"> Total price </h4>
-      <strong><%= number_to_currency(line_item.price) %></strong>
+      <strong><%= number_to_currency(line_item.total) %></strong>
     </div>
     <div class="span2 remove">
     </div>

@@ -31,7 +31,7 @@ module ActiveMerchant #:nodoc:
             line_items.to_enum.with_index(1) do | line_item, index |
               add_field("item_name_#{index}", line_item.product_name)
               add_field("quantity_#{index}",  line_item.quantity)
-              add_field("amount_#{index}",    line_item.product_price)
+              add_field("amount_#{index}",    line_item.price)
             end
           end
         end
