@@ -190,8 +190,8 @@ class CreateInitialTables < ActiveRecord::Migration
 
     create_table "variants", :force => true do |t|
       t.integer  "product_id",                                                      :null => false
-      t.string   "price",                                                           :null => false
-      t.string   "quantity",                                                        :null => false
+      t.decimal  "price",       :precision => 8, :scale => 2,                       :null => false
+      t.integer  "quantity",                                                        :null => false
       t.text     "values"
       t.datetime "created_at",                                                      :null => false
       t.datetime "updated_at",                                                      :null => false

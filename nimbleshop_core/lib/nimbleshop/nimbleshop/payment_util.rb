@@ -3,7 +3,7 @@ module Nimbleshop
     extend self
 
     def billing_address_json(order)
-      a = order.final_billing_adress
+      a = order.final_billing_address
 
       { address1: a.address1,
         city:     a.city,

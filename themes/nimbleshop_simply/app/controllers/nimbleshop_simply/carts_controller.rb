@@ -10,8 +10,9 @@ module NimbleshopSimply
 
     def add
       product = Product.find_by_permalink!(params[:permalink])
+      variant = Variant.find_by_id(params[:variant])
       session[:order_id] = Order.create!.id unless current_order
-      current_order.add(product)
+      current_order.add(product, variant)
       redirect_to cart_url
     end
 

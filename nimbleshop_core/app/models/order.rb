@@ -78,8 +78,8 @@ class Order < ActiveRecord::Base
     line_items.count
   end
 
-  def add(product)
-    line_item_for(product.id) || line_items.create(product_id: product.id, quantity: 1)
+  def add(product, variant = nil)
+    line_item_for(product.id) || line_items.create(product: product, quantity: 1, variant: variant)
   end
 
   def update_quantity(data = {})
